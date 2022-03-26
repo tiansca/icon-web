@@ -1,3 +1,4 @@
+import config from '@/config.js'
 const insertCss = (val) => {
   const header = document.querySelector('head')
   // const fonticonLink = document.querySelectorAll('link[name="fonticon"]')
@@ -15,7 +16,7 @@ const insertCss = (val) => {
     link.setAttribute('name', tagAttrNameValue)
     link.setAttribute('rel', 'stylesheet')
     link.setAttribute('type', 'text/css')
-    link.href = 'http://localhost:3009/' + item.cssUrl + `?${Date.now()}`
+    link.href = config.cssUrl + item.cssUrl + `?${Date.now()}`
     if (header) {
       header.append(link)
     }
