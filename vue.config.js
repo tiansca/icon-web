@@ -15,7 +15,7 @@ module.exports = {
     proxy: {
       '/api': {
         // 'target': 'https://api.tiansc.top/api/',
-        'target': 'http://localhost:3009',
+        'target': 'http://localhost:3013',
         'changeOrigin': true,
         // "secure": false,
         pathRewrite: { // 重命名
