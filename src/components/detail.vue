@@ -13,7 +13,7 @@
     <div class="page-box">
       <div v-if="list.length > 0" class="link-info">
         <div>
-          css链接：<a :href="`${cssLink}${cssUrl}`" target="_block">{{ `${baseUrl}fonts/${name}/${name}.css` }}</a>
+          css链接：<a :href="`${cssLink}${cssUrl}`" target="_block">{{ `${cssLink}${cssUrl}` }}</a>
         </div>
       </div>
       <div v-if="list.length > 0" class="icon-wrap">
