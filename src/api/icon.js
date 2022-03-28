@@ -1,4 +1,5 @@
 import request from '@/utils/request'
+import config from '@/config.js'
 
 export function createIcon(params) {
   return request({
@@ -38,6 +39,6 @@ export function deleteIcon(params) {
 
 // 下载图标
 export function download(name, className) {
-  window.open(`api/icon/download?name=${name}&className=${className}`)
+  window.open(`${config.baseUrl}icon/download?name=${name}&className=${className}`)
 }
 
