@@ -5,26 +5,28 @@
       <div class="addButton" title="新建项目" @click="addProject">
         <img src="../assets/add.png" alt="">
       </div>
-      <div v-loading="item.loading" class="project-item" v-for="item in list" :key="item.name" @click="goDetail(item.name)">
-        <div class="project-name">
-          {{item.name}}
-        </div>
-        <div class="icon-overview">
-          <div v-for="icon in item.iconList" :key="icon" class="icon-item">
-            <span :class="icon"></span>
+      <div class="project-list">
+        <div v-loading="item.loading" class="project-item" v-for="item in list" :key="item.name" @click="goDetail(item.name)">
+          <div class="project-name">
+            {{item.name}}
           </div>
-          <div v-if="!item.iconList || item.iconList.length === 0" style="width: 100%">暂无图标</div>
-          <div class="icon-item hide">
-            <span></span>
+          <div class="icon-overview">
+            <div v-for="icon in item.iconList" :key="icon" class="icon-item">
+              <span :class="icon"></span>
+            </div>
+            <div v-if="!item.iconList || item.iconList.length === 0" style="width: 100%">暂无图标</div>
+            <div class="icon-item hide">
+              <span></span>
+            </div>
+          </div>
+          <div class="item-bottom">
+            <div class="item-button" @click.stop="deleteProject(item.name)">删除</div>
+            <div class="item-button" @click.stop="updateProject(item.name)">重命名</div>
+            <div class="item-button" @click.stop="createIcon(item)">更新</div>
           </div>
         </div>
-        <div class="item-bottom">
-          <div class="item-button" @click.stop="deleteProject(item.name)">删除</div>
-          <div class="item-button" @click.stop="updateProject(item.name)">重命名</div>
-          <div class="item-button" @click.stop="createIcon(item)">更新</div>
-        </div>
+        <div v-if="list.length === 0" style="margin-top: 30px; text-align: center;width: 100%">暂无数据</div>
       </div>
-      <div v-if="list.length === 0" style="margin-top: 30px; text-align: center;width: 100%">暂无数据</div>
     </div>
   </div>
 </template>
@@ -171,9 +173,6 @@ export default {
 <style scoped lang="scss">
 .page-box{
   position: relative;
-  display: flex;
-  justify-content: flex-start;
-  flex-wrap: wrap;
   padding: 16px;
   .addButton{
     position: absolute;
@@ -184,9 +183,14 @@ export default {
       width: 40px;
     }
   }
+  .project-list{
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
   .project-item{
     width: 150px;
-    margin-right: 30px;
+    margin: 30px;
     height: 150px;
     border: 1px solid #ccc;
     cursor: pointer;

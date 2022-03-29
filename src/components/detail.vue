@@ -12,7 +12,7 @@
     </div>
     <div class="page-box">
       <div v-if="list.length > 0" class="link-info">
-        <div>
+        <div style="width: 100%;overflow: hidden;white-space: nowrap;text-overflow: ellipsis">
           css链接：<a :href="`${cssLink}${cssUrl}`" target="_block">{{ `${cssLink}${cssUrl}` }}</a>
         </div>
       </div>
@@ -93,8 +93,17 @@ export default {
     },
     async upload() {
       const formData = new FormData();
+      console.log(this.$refs.input)
+      if (!this.$refs.input) {
+        return
+      }
       const files = this.$refs.input.files
       formData.append('name', this.name);
+      console.log(files.length)
+      if (!files || files.length === 0) {
+        console.log('文件为空')
+        return
+      }
       files.forEach(function (file) {
         formData.append('files', file, file.name);
       })
@@ -157,6 +166,7 @@ export default {
     display: flex;
     margin-top: 30px;
     justify-content: flex-start;
+    flex-wrap: wrap;
     .icon-item{
       padding: 20px;
       margin: 20px;
