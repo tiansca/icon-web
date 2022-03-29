@@ -104,9 +104,9 @@ export default {
         console.log('文件为空')
         return
       }
-      files.forEach(function (file) {
-        formData.append('files', file, file.name);
-      })
+      for (let a = 0; a < files.length; a++) {
+        formData.append('files', files[a], files[a].name);
+      }
       this.$bus.$emit('loadingShow')
       try {
         const {data} = await upload(formData)
