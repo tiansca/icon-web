@@ -1,4 +1,5 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
+import { store } from '@/store'
 
 const routes = [
   {
@@ -18,6 +19,14 @@ const routes = [
     }
   },
   {
+    path: '/login',
+    name: '登录',
+    component: () => import('../components/login'),
+    meta: {
+      title: 'login'
+    }
+  },
+  {
     path: '/:pathMatch(.*)*',
     redirect: '/'
   }
@@ -29,5 +38,20 @@ const router = createRouter({
   routes: routes
 })
 
+router.beforeEach((to, from, next) => {
+  const isLogin = store.state.isLogin
+  if (to.path == '/login' && !isLogin) {
+    // 登录或者注册才可以往下进行
+    next();
+  } else {
+    // 获取 登录状态
+    // token 不存在
+    if (!isLogin) {
+      next('/login');
+    } else {
+      next();
+    }
+  }
+})
 
 export default router

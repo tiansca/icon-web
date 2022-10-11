@@ -8,7 +8,8 @@ const state = {
     width: 0,
     height: 0
   },
-  path: ''
+  path: '',
+  isLogin: false
 }
 
 export default state

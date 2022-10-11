@@ -1,21 +1,25 @@
+import {login} from "@/api/project";
+
 /**
  * Created by administrator on 2019/4/23.
  */
 // import {getUserInfo, logout} from "../api/user";
 const actions = {
-  getUserInfo(content) {
+  login(content, password) {
     return new Promise(async function(resolve, reject) {
       console.log(content)
       try {
-        resolve()
-        // const info = await getUserInfo()
-        // if (info.code === 0) {
-        //   content.commit('setUserSession', info.data || {})
-        //   resolve(info.data)
-        // } else {
-        //   content.commit('setUserSession', {})
-        //   reject('请登录')
-        // }
+        const info = await login({
+          password: password
+        })
+        console.log(info)
+        if (info.code === 0) {
+          content.commit('setLogin', true)
+          resolve(info.data)
+        } else {
+          content.commit('setLogin', false)
+          reject('请登录')
+        }
       } catch (e) {
         reject('请登录')
       }

@@ -1,4 +1,5 @@
 import request from '@/utils/request'
+import config from '@/config.js'
 
 export function getProjects(params) {
   return request({
@@ -30,5 +31,13 @@ export function updateProject(params) {
     url: 'icon/update_project',
     method: 'get',
     params
+  })
+}
+
+export function login(data) {
+  return request({
+    url: `${config.loginUrl}icon_login/`,
+    method: 'post',
+    data
   })
 }

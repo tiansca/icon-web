@@ -14,6 +14,9 @@ const mutations = {
   },
   setHeight(state, value) {
     state.height = value
+  },
+  setLogin(state, value) {
+    state.isLogin = value
   }
 }
 

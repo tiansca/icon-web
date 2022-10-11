@@ -13,6 +13,15 @@ module.exports = {
     /* 自动打开浏览器 */
     /* 使用代理 */
     proxy: {
+      '/api/login/': {
+        // 'target': 'https://api.tiansc.top/api/',
+        'target': 'http://localhost:3000/',
+        'changeOrigin': true,
+        // "secure": false,
+        pathRewrite: { // 重命名
+          '^/api/login': ''
+        }
+      },
       '/api': {
         // 'target': 'https://api.tiansc.top/api/',
         'target': 'http://localhost:3013',
