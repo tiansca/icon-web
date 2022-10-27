@@ -101,10 +101,20 @@ export default {
           cancelButtonText: '取消',
           confirmButtonText: '确定',
         })
-        await addProject({
-          name: res.value
-        })
-        this.getList()
+        // 名称只能是英文开头
+        const  reg = /^[a-zA-Z][a-zA-Z0-9_]*$/
+        if (reg.test(res.value)) {
+          await addProject({
+            name: res.value
+          })
+          this.getList()
+        } else {
+          this.$alert('名称只能包含英文和数字且必须以英文字母开头', '提示', {
+            type: 'error',
+            confirmButtonText: '确定',
+          })
+        }
+
       } catch (e) {
         console.log(e)
         if (e && e.code === -1) {
