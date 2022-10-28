@@ -22,6 +22,10 @@ import 'element-plus/lib/theme-chalk/index.css';
 // }
 
 const init = async () => {
+  console.log(localStorage.getItem('icon_password'))
+  if (localStorage.getItem('icon_password')) {
+    await store.dispatch('login', localStorage.getItem('icon_password'))
+  }
   // await getUser()
   const app = createApp(App)
   app.use(store)

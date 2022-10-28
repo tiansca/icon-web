@@ -48,8 +48,10 @@ router.beforeEach((to, from, next) => {
     // token 不存在
     if (!isLogin) {
       next('/login');
+    } else if (to.path === '/login') {
+      next('/');
     } else {
-      next();
+      next()
     }
   }
 })

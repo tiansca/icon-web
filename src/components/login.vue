@@ -17,6 +17,7 @@ export default {
     async login() {
       try {
         await this.$store.dispatch('login', this.password)
+        localStorage.setItem('icon_password', this.password)
         this.$router.push({
           path: '/'
         })
