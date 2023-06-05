@@ -5,16 +5,18 @@ import {login} from "@/api/project";
  */
 // import {getUserInfo, logout} from "../api/user";
 const actions = {
-  login(content, password) {
+  login(content, user) {
     return new Promise(async function(resolve, reject) {
       console.log(content)
       try {
         const info = await login({
-          password: password
+          password: user.password,
+          name: user.name
         })
         console.log(info)
         if (info.code === 0) {
           content.commit('setLogin', true)
+          localStorage.setItem('token', info.data.token)
           resolve(info.data)
         } else {
           content.commit('setLogin', false)

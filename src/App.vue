@@ -15,6 +15,18 @@ export default {
     // myHeader,
     // upload
   },
+  computed: {
+    isLogin() {
+      return this.$store.state.isLogin
+    }
+  },
+  watch: {
+    isLogin(n) {
+      if (!n) {
+        this.$router.push('/login')
+      }
+    }
+  },
   mounted() {
     // this.login()
     window.addEventListener('resize', this.setSize)
