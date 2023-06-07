@@ -1,6 +1,20 @@
 <template>
   <div class="container">
-    <div class="header">图标库</div>
+    <div class="header">
+      <span class="left"></span>
+      <span>图标库</span>
+      <el-dropdown @command="menuClick">
+        <span class="el-dropdown-link">
+          {{ userName }}
+          <img src="../assets/arrow-down.png">
+        </span>
+        <template #dropdown>
+          <el-dropdown-menu>
+            <el-dropdown-item command="logout">退出</el-dropdown-item>
+          </el-dropdown-menu>
+        </template>
+      </el-dropdown>
+    </div>
     <div class="page-box">
       <div class="addButton" title="新建项目" @click="addProject">
         <img src="../assets/add.png" alt="">
@@ -20,7 +34,7 @@
             </div>
           </div>
           <div class="item-bottom">
-            <div class="item-button" @click.stop="deleteProject(item.name)">删除</div>
+            <div v-if="userRole === 'admin'" class="item-button" @click.stop="deleteProject(item.name)">删除</div>
             <div class="item-button" @click.stop="updateProject(item.name)">重命名</div>
             <div class="item-button" @click.stop="createIcon(item)">更新</div>
           </div>
@@ -72,6 +86,14 @@ export default {
     //   { deep: true }
     )
     return state
+  },
+  computed: {
+    userName() {
+      return this.$store.getters.userName || '用户'
+    },
+    userRole() {
+      return this.$store.getters.userRole || ''
+    }
   },
   methods: {
     async deleteProject(name) {
@@ -183,6 +205,12 @@ export default {
           name
         }
       })
+    },
+    async menuClick(e) {
+      if (e === 'logout') {
+        await this.$store.dispatch('logout')
+        this.$router.push('/login')
+      }
     }
   }
 }
@@ -190,6 +218,15 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+.header ::v-deep .el-dropdown{
+  width: 150px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 16px;
+  text-align: right;
+  max-width: 150px;
+}
 .page-box{
   position: relative;
   padding: 16px;

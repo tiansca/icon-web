@@ -4,6 +4,9 @@
 const getters = {
   userName(state) {
     return state.user.name
+  },
+  userRole(state) {
+    return state.user.role
   }
 }
 

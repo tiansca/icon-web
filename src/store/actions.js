@@ -17,9 +17,17 @@ const actions = {
         if (info.code === 0) {
           content.commit('setLogin', true)
           localStorage.setItem('token', info.data.token)
+          const user = {
+            name: info.data.name,
+            role: info.data.role
+          }
+          content.commit('setUserSession', user)
+          localStorage.setItem('user', JSON.stringify(user))
           resolve(info.data)
         } else {
           content.commit('setLogin', false)
+          content.commit('setUserSession', {})
+          localStorage.setItem('user', JSON.stringify({}))
           reject('请登录')
         }
       } catch (e) {
@@ -33,8 +41,11 @@ const actions = {
       // const info = await logout()
       try {
       //   if (info.code === 0) {
-      //     store.commit('setUserSession', {})
-          resolve()
+        store.commit('setLogin', false)
+        store.commit('setUserSession', {})
+        localStorage.setItem('user', JSON.stringify({}))
+        localStorage.removeItem('token')
+        resolve()
       //   } else {
       //     reject('退出失败！')
       //   }

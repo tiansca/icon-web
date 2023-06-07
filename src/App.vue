@@ -91,9 +91,26 @@ html, body{
   display: flex;
   font-size: 18px;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   background-color: #fff;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+}
+.header .el-dropdown{
+  max-width: 120px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 16px;
+}
+.header .el-dropdown-link{
+  cursor: pointer;
+}
+.header .el-dropdown-link>img{
+  width: 12px;
+}
+.header .left{
+  width: 150px;
+  display: inline-block;
 }
 .page-box{
   flex-grow: 1;

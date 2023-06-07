@@ -3,10 +3,8 @@
  */
 const state = {
   user: {
-    name: '123',
-    id: '',
-    width: 0,
-    height: 0
+    name: '',
+    role: ''
   },
   path: '',
   isLogin: false

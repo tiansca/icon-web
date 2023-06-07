@@ -1,13 +1,24 @@
 <template>
   <div class="container">
     <div class="header">
-      <div style="width: 100px">
+      <div style="width: 220px">
         <el-button size="small" @click="$router.back()">返回</el-button>
       </div>
       <span>图标预览-{{name}}</span>
-      <div style="width: 100px">
+      <div style="width: 220px;display: flex;align-items: center;justify-content: flex-end">
         <input ref="input" type="file" multiple style="display:none" @change="upload" accept="image/svg+xml">
-        <el-button type="primary" size="small" @click="selectFiles">上传svg</el-button>
+        <el-button type="primary" size="small" @click="selectFiles" style="margin-right: 16px">上传svg</el-button>
+        <el-dropdown @command="menuClick">
+        <span class="el-dropdown-link">
+          {{ userName }}
+          <img src="../assets/arrow-down.png">
+        </span>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item command="logout">退出</el-dropdown-item>
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
       </div>
     </div>
     <div class="page-box">
@@ -18,10 +29,10 @@
       </div>
       <div v-if="list.length > 0" class="icon-wrap">
         <div v-for="icon in list" :key="icon" class="icon-item">
-          <span :class="icon"></span>
-          <div>{{icon}}</div>
+          <span class="icon" :class="icon"></span>
+          <div class="icon-name">{{icon}}</div>
           <div class="mask">
-            <div class="delete-button"  title="删除图标" @click="deleteIcon(icon)">
+            <div v-if="userRole === 'admin'" class="delete-button"  title="删除图标" @click="deleteIcon(icon)">
               <img src="../assets/delete.png" alt="">
             </div>
             <div class="mask-bottom">
@@ -87,6 +98,14 @@ export default {
     })
     return state
   },
+  computed: {
+    userName() {
+      return this.$store.getters.userName || '用户'
+    },
+    userRole() {
+      return this.$store.getters.userRole || ''
+    }
+  },
   methods: {
     selectFiles() {
       this.$refs.input.click()
@@ -145,6 +164,12 @@ export default {
     },
     copyClass(icon) {
       copy(icon)
+    },
+    async menuClick(e) {
+      if (e === 'logout') {
+        await this.$store.dispatch('logout')
+        this.$router.push('/login')
+      }
     }
   }
 }
@@ -168,8 +193,9 @@ export default {
     justify-content: flex-start;
     flex-wrap: wrap;
     .icon-item{
-      padding: 20px;
-      margin: 20px;
+      padding: 12px 3px;
+      margin: 16px 0;
+      width: 120px;
       position: relative;
       span:first-of-type{
         font-size: 40px;
@@ -179,13 +205,20 @@ export default {
         font-size: 16px;
         color: #333
       }
+      .icon-name{
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-size: 13px;
+        margin-top: 3px;
+      }
       .mask{
         position: absolute;
         width: 100%;
         height: 100%;
         top: 0;
         left: 0;
-        background-color: rgba(60, 60, 60, 0.8);
+        background-color: rgba(0, 0, 0, 0.6);
         align-items: center;
         justify-content: center;
         display: none;
@@ -204,7 +237,7 @@ export default {
           border-top: 1px solid #999;
           div{
             font-size: 13px;
-            color: #ccc;
+            color: #dcdcdc;
             line-height: 30px;
             flex-grow: 1;
             text-align: center;
@@ -219,6 +252,12 @@ export default {
         }
       }
       &:hover{
+        .icon{
+          opacity: 0.6;
+        }
+        .icon-name{
+          opacity: 0.6;
+        }
         .mask{
           display: flex;
         }

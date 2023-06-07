@@ -26,6 +26,14 @@ const init = async () => {
   if (localStorage.getItem('token')) {
     store.commit('setLogin', true)
   }
+  // 用户信息
+  if (localStorage.getItem('user')) {
+    try {
+      const user = JSON.parse(localStorage.getItem('user'))
+      store.commit('setUserSession', user)
+    } catch(e) {console.log(e)}
+
+  }
   // await getUser()
   const app = createApp(App)
   app.use(store)

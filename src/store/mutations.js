@@ -4,7 +4,7 @@
 const mutations = {
   setUserSession(state, value) {
     state.user.name = value.name || ''
-    state.user.id = value.id || ''
+    state.user.role = value.role || ''
   },
   setPath(state, value) {
     state.path = value
