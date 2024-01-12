@@ -15,6 +15,7 @@
         </span>
           <template #dropdown>
             <el-dropdown-menu>
+              <el-dropdown-item command="doc">文档</el-dropdown-item>
               <el-dropdown-item command="logout">退出</el-dropdown-item>
             </el-dropdown-menu>
           </template>
@@ -23,24 +24,46 @@
     </div>
     <div class="page-box">
       <div v-if="list.length > 0" class="link-info">
-        <div style="width: 100%;overflow: hidden;white-space: nowrap;text-overflow: ellipsis">
+        <div v-if="!isSvg" style="width: 100%;overflow: hidden;white-space: nowrap;text-overflow: ellipsis">
           css链接：<a :href="`${cssLink}${cssUrl}`" target="_block">{{ `${cssLink}${cssUrl}` }}</a>
         </div>
+        <div v-else style="width: 100%;overflow: hidden;white-space: nowrap;text-overflow: ellipsis">
+          js链接：<a :href="`${cssLink}${jsUrl}`" target="_block">{{ `${cssLink}${jsUrl}` }}</a>
+        </div>
       </div>
-      <div v-if="list.length > 0" class="icon-wrap">
-        <div v-for="icon in list" :key="icon" class="icon-item">
-          <span class="icon" :class="icon"></span>
-          <div class="icon-name">{{icon}}</div>
-          <div class="mask">
-            <div v-if="userRole === 'admin'" class="delete-button"  title="删除图标" @click="deleteIcon(icon)">
-              <img src="../assets/delete.png" alt="">
-            </div>
-            <div class="mask-bottom">
-              <div @click="downloadSvg(name, icon)">下载</div>
-              <div @click="copyClass(icon)">复制</div>
+      <div v-if="list.length > 0">
+        <div v-if="!isSvg" class="icon-wrap">
+          <div v-for="icon in list" :key="icon" class="icon-item">
+            <span class="icon" :class="icon"></span>
+            <div class="icon-name">{{icon}}</div>
+            <div class="mask">
+              <div v-if="userRole === 'admin'" class="delete-button"  title="删除图标" @click="deleteIcon(icon)">
+                <img src="../assets/delete.png" alt="">
+              </div>
+              <div class="mask-bottom">
+                <div @click="downloadSvg(name, icon)">下载</div>
+                <div @click="copyClass(icon)">复制</div>
+              </div>
             </div>
           </div>
         </div>
+        <div v-else class="icon-wrap">
+          <div v-for="icon in list" :key="icon" class="icon-item">
+            <span class="icon"></span>
+            <svg-icon style="font-size: 40px" :icon-name="icon"></svg-icon>
+            <div class="icon-name">{{icon}}</div>
+            <div class="mask">
+              <div v-if="userRole === 'admin'" class="delete-button"  title="删除图标" @click="deleteIcon(icon)">
+                <img src="../assets/delete.png" alt="">
+              </div>
+              <div class="mask-bottom">
+                <div @click="downloadSvg(name, icon)">下载</div>
+                <div @click="copyClass(icon)">复制</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
       <div v-if="list.length === 0" style="margin-top: 30px">
         暂无数据
@@ -57,8 +80,11 @@ import Bus from '../utils/bus.js'
 import config from '@/config.js'
 import insertCss from "../utils/insertCss";
 import copy from '../utils/copyText'
+import insertJs from "@/utils/insertJs";
+import SvgIcon from "@/components/svgIcon.vue";
 export default {
   name: "detail",
+  components: {SvgIcon},
   setup() {
     const getList = async () => {
       Bus.$emit('loadingShow')
@@ -68,6 +94,7 @@ export default {
         })
         state.list = data.iconList
         state.cssUrl = data.cssUrl
+        state.jsUrl = data.jsUrl
         console.log(state.list)
       } catch (e) {
         console.log(e)
@@ -81,7 +108,9 @@ export default {
       name: '',
       baseUrl: config.baseUrl,
       cssLink: config.cssUrl,
-      cssUrl: ''
+      cssUrl: '',
+      jsUrl: '',
+      isSvg: false
     })
     onMounted(async () => {
       const route = useRoute()
@@ -89,11 +118,22 @@ export default {
         state.name = route.query.name
         await getList()
         // 查找有无css
-        const tagAttrNameValue = `fonticon${state.name}`
-        const fonticonLink = document.querySelector(`link[name="${tagAttrNameValue}"]`)
-        if (!fonticonLink) {
-          insertCss([{name: state.name, cssUrl: state.cssUrl}])
+        state.isSvg = state.name.indexOf('svg') !== -1
+        if (!state.isSvg) {
+          // const tagAttrNameValue = `fonticon${state.name}`
+          // const fonticonLink = document.querySelector(`link[name="${tagAttrNameValue}"]`)
+          // if (!fonticonLink) {
+            insertCss([{name: state.name, cssUrl: state.cssUrl}])
+          // }
+        } else {
+          // // 插入js
+          // const tagAttrNameValue = `fonticon${state.name}`
+          // const fonticonLink = document.querySelector(`script[name="${tagAttrNameValue}"]`)
+          // if (!fonticonLink) {
+            insertJs([{name: state.name, jsUrl: state.jsUrl}])
+          // }
         }
+
       }
     })
     return state
@@ -169,6 +209,8 @@ export default {
       if (e === 'logout') {
         await this.$store.dispatch('logout')
         this.$router.push('/login')
+      } else if (e === 'doc') {
+        this.$router.push('doc')
       }
     }
   }

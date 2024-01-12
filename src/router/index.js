@@ -27,6 +27,14 @@ const routes = [
     }
   },
   {
+    path: '/doc',
+    name: '指南',
+    component: () => import('../components/doc'),
+    meta: {
+      title: '指南'
+    }
+  },
+  {
     path: '/:pathMatch(.*)*',
     redirect: '/'
   }

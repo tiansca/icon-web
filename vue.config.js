@@ -23,7 +23,7 @@ module.exports = {
       //   }
       // },
       '/api': {
-        // 'target': 'https://api.tiansc.top/api/',
+        // 'target': 'https://api.tiansc.top/api/icon/',
         'target': 'http://localhost:3013',
         'changeOrigin': true,
         // "secure": false,

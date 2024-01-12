@@ -3,17 +3,20 @@
     <div class="header">
       <span class="left"></span>
       <span>图标库</span>
-      <el-dropdown @command="menuClick">
+      <div class="right">
+        <el-dropdown @command="menuClick">
         <span class="el-dropdown-link">
           {{ userName }}
           <img src="../assets/arrow-down.png">
         </span>
-        <template #dropdown>
-          <el-dropdown-menu>
-            <el-dropdown-item command="logout">退出</el-dropdown-item>
-          </el-dropdown-menu>
-        </template>
-      </el-dropdown>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item command="doc">文档</el-dropdown-item>
+              <el-dropdown-item command="logout">退出</el-dropdown-item>
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
+      </div>
     </div>
     <div class="page-box">
       <div class="addButton" title="新建项目" @click="addProject">
@@ -21,12 +24,19 @@
       </div>
       <div class="project-list">
         <div v-loading="item.loading" class="project-item" v-for="item in list" :key="item.name" @click="goDetail(item.name)">
-          <div class="project-name">
+          <div class="project-name" :title="item.name">
             {{item.name}}
           </div>
-          <div class="icon-overview">
-            <div v-for="icon in item.iconList" :key="icon" class="icon-item">
-              <span :class="icon"></span>
+          <div>
+            <div v-if="item.name.indexOf('svg') === -1" class="icon-overview">
+              <div v-for="icon in item.iconList" :key="icon" class="icon-item">
+                <span :class="icon"></span>
+              </div>
+            </div>
+            <div v-else class="icon-overview">
+              <div v-for="icon in item.iconList" :key="icon" class="icon-item">
+                <svg-icon :icon-name="icon"></svg-icon>
+              </div>
             </div>
             <div v-if="!item.iconList || item.iconList.length === 0" style="width: 100%">暂无图标</div>
             <div class="icon-item hide">
@@ -42,6 +52,7 @@
         <div v-if="list.length === 0" style="margin-top: 30px; text-align: center;width: 100%">暂无数据</div>
       </div>
     </div>
+    <SvgIcon icon-name="test_color-user"></SvgIcon>
   </div>
 </template>
 
@@ -51,9 +62,12 @@ import {getProjects, deleteProject, addProject, updateProject} from "../api/proj
 import {createIcon} from '../api/icon'
 import Bus from '../utils/bus.js'
 import insertCss from "../utils/insertCss";
+import SvgIcon from "@/components/svgIcon.vue";
+import insertJs from "@/utils/insertJs";
 
 export default {
   name: 'list',
+  components: {SvgIcon},
   setup() {
     const getList = async () => {
       Bus.$emit('loadingShow')
@@ -63,7 +77,14 @@ export default {
           item.iconList = item.iconList.slice(0, 4)
           return item
         })
-        insertCss(state.list)
+        const cssList = state.list.filter(item => {
+          return item.name.indexOf('svg') === -1
+        })
+        const jsList = state.list.filter(item => {
+          return item.name.indexOf('svg') !== -1
+        })
+        insertCss(cssList)
+        insertJs(jsList)
         console.log('getList')
       } catch (e) {
         console.log(e)
@@ -187,7 +208,12 @@ export default {
         console.log(data)
         if (data.cssUrl) {
           item.cssUrl = data.cssUrl
-          insertCss([item])
+          item.jsUrl = data.jsUrl
+          if (item.name.indexOf('svg') === -1) {
+            insertCss([item])
+          } else {
+            insertJs([item])
+          }
         }
       } catch (e) {
         if (e && e.data) {
@@ -210,6 +236,8 @@ export default {
       if (e === 'logout') {
         await this.$store.dispatch('logout')
         this.$router.push('/login')
+      } else if (e === 'doc') {
+        this.$router.push('doc')
       }
     }
   }
@@ -218,7 +246,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-.header ::v-deep .el-dropdown{
+.header .right{
   width: 150px;
   white-space: nowrap;
   overflow: hidden;
@@ -265,6 +293,8 @@ export default {
       //border-bottom: 1px solid #999;
       line-height: 30px;
       font-weight: 600;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .icon-overview{
       display: flex;
@@ -272,6 +302,7 @@ export default {
       justify-content: space-around;
       padding: 12px 12px 0;
       .icon-item{
+        font-size: 30px;
         width: 35%;
         margin-bottom: 16px;
         //font-size: 32px;
