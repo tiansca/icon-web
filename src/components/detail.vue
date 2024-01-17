@@ -24,15 +24,24 @@
     </div>
     <div class="page-box">
       <div v-if="list.length > 0" class="link-info">
-        <div v-if="!isSvg" style="width: 100%;overflow: hidden;white-space: nowrap;text-overflow: ellipsis">
+        <div v-if="model === 'css'" style="flex-grow: 1;overflow: hidden;white-space: nowrap;text-overflow: ellipsis">
           css链接：<a :href="`${cssLink}${cssUrl}`" target="_block">{{ `${cssLink}${cssUrl}` }}</a>
+          <span style="color: #999;margin-left: 20px;font-size: 12px">{{ removeColor ? '去除颜色' : '保留颜色' }}</span>
         </div>
         <div v-else style="width: 100%;overflow: hidden;white-space: nowrap;text-overflow: ellipsis">
           js链接：<a :href="`${cssLink}${jsUrl}`" target="_block">{{ `${cssLink}${jsUrl}` }}</a>
+          <span style="color: #999;margin-left: 20px;font-size: 12px">{{ removeColor ? '去除颜色' : '保留颜色' }}</span>
+        </div>
+        <div class="right-button" v-show="removeColor">
+          <span style="margin-right: 8px">模式:</span>
+          <el-radio-group v-model="model" @change="modelChange">
+            <el-radio label="js" size="large">js(svg symbols)</el-radio>
+            <el-radio label="css" size="large">css(font icon)</el-radio>
+          </el-radio-group>
         </div>
       </div>
       <div v-if="list.length > 0">
-        <div v-if="!isSvg" class="icon-wrap">
+        <div v-if="model === 'css'" class="icon-wrap">
           <div v-for="icon in list" :key="icon" class="icon-item">
             <span class="icon" :class="icon"></span>
             <div class="icon-name">{{icon}}</div>
@@ -75,7 +84,7 @@
 <script>
 import { reactive, onMounted } from "vue"
 import { useRoute } from 'vue-router';
-import {getIconlist, upload, deleteIcon, download} from '../api/icon'
+import {getIconlist, upload, deleteIcon, download, updateModel} from '../api/icon'
 import Bus from '../utils/bus.js'
 import config from '@/config.js'
 import insertCss from "../utils/insertCss";
@@ -95,6 +104,8 @@ export default {
         state.list = data.iconList
         state.cssUrl = data.cssUrl
         state.jsUrl = data.jsUrl
+        state.removeColor = data.removeColor
+        state.model = data.model
         console.log(state.list)
       } catch (e) {
         console.log(e)
@@ -110,28 +121,18 @@ export default {
       cssLink: config.cssUrl,
       cssUrl: '',
       jsUrl: '',
-      isSvg: false
+      removeColor: true,
+      model: 'css'
     })
     onMounted(async () => {
       const route = useRoute()
       if (route.query && route.query.name) {
         state.name = route.query.name
         await getList()
-        // 查找有无css
-        state.isSvg = state.name.indexOf('svg') !== -1
-        if (!state.isSvg) {
-          // const tagAttrNameValue = `fonticon${state.name}`
-          // const fonticonLink = document.querySelector(`link[name="${tagAttrNameValue}"]`)
-          // if (!fonticonLink) {
+        if (state.model === 'css') {
             insertCss([{name: state.name, cssUrl: state.cssUrl}])
-          // }
         } else {
-          // // 插入js
-          // const tagAttrNameValue = `fonticon${state.name}`
-          // const fonticonLink = document.querySelector(`script[name="${tagAttrNameValue}"]`)
-          // if (!fonticonLink) {
             insertJs([{name: state.name, jsUrl: state.jsUrl}])
-          // }
         }
 
       }
@@ -169,7 +170,12 @@ export default {
       this.$bus.$emit('loadingShow')
       try {
         const {data} = await upload(formData)
-        insertCss([data])
+        if (this.model === 'css') {
+          insertCss([{name: this.name, cssUrl: this.cssUrl}])
+        } else {
+          insertJs([{name: this.name, jsUrl: this.jsUrl}])
+        }
+
         this.list = data.classList
       } catch (e) {
         console.log(e)
@@ -212,6 +218,21 @@ export default {
       } else if (e === 'doc') {
         this.$router.push('doc')
       }
+    },
+    async modelChange(e) {
+      console.log(e)
+      try {
+        await updateModel({
+          name: this.name,
+          model: e
+        })
+        location.reload()
+      } catch (e) {
+        this.$alert('切换失败', '提示', {
+          type: 'error',
+          confirmButtonText: '确定',
+        })
+      }
     }
   }
 }
@@ -228,6 +249,15 @@ export default {
   padding: 16px;
   .link-info{
     text-align: left;
+    display: flex;
+    justify-content: space-between;
+    .right-button{
+      display: flex;
+      flex-shrink: 0;
+      align-items: center;
+      line-height: 14px;
+      font-size: 14px;
+    }
   }
   .icon-wrap{
     display: flex;

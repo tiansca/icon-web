@@ -42,3 +42,12 @@ export function download(name, className) {
   window.open(`${config.baseUrl}icon/download?name=${name}&className=${className}`)
 }
 
+// 更新图标模式
+export function updateModel(params) {
+  return request({
+    url: 'icon/update_project_model',
+    method: 'get',
+    params
+  })
+}
+

@@ -19,7 +19,7 @@
       </div>
     </div>
     <div class="page-box">
-      <div class="addButton" title="新建项目" @click="addProject">
+      <div class="addButton" title="新建项目" @click="openAddProject">
         <img src="../assets/add.png" alt="">
       </div>
       <div class="project-list">
@@ -28,7 +28,7 @@
             {{item.name}}
           </div>
           <div>
-            <div v-if="item.name.indexOf('svg') === -1" class="icon-overview">
+            <div v-if="item.model === 'css'" class="icon-overview">
               <div v-for="icon in item.iconList" :key="icon" class="icon-item">
                 <span :class="icon"></span>
               </div>
@@ -53,6 +53,26 @@
       </div>
     </div>
     <SvgIcon icon-name="test_color-user"></SvgIcon>
+    <el-dialog v-model="addProjectVisible" title="新建项目" width="500px">
+      <el-form :model="addProjectForm" label-width="120px">
+        <el-form-item label="项目名称">
+          <el-input v-model="addProjectForm.name" />
+        </el-form-item>
+        <el-form-item label="去除颜色" style="text-align: left">
+          <el-switch v-model="addProjectForm.removeColor" @change="removeColorChange" />
+        </el-form-item>
+        <el-form-item label="模式" style="text-align: left">
+          <el-radio-group v-model="addProjectForm.model" :disabled="!addProjectForm.removeColor" class="ml-4">
+            <el-radio label="js" size="large">js(svg symbols)</el-radio>
+            <el-radio label="css" size="large">css(font icon)</el-radio>
+          </el-radio-group>
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <el-button @click="addProjectVisible = false">取消</el-button>
+        <el-button type="primary" @click="addProject">确定</el-button>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
@@ -78,10 +98,10 @@ export default {
           return item
         })
         const cssList = state.list.filter(item => {
-          return item.name.indexOf('svg') === -1
+          return item.model === 'css'
         })
         const jsList = state.list.filter(item => {
-          return item.name.indexOf('svg') !== -1
+          return item.model === 'js'
         })
         insertCss(cssList)
         insertJs(jsList)
@@ -94,7 +114,13 @@ export default {
     const state = reactive({
       list: [],
       // deleteProject,
-      getList
+      getList,
+      addProjectForm: {
+        name: '',
+        removeColor: true,
+        model: 'css' // css、js,保留颜色时只能是js
+      },
+      addProjectVisible: false
     })
     onMounted(() => {
       getList()
@@ -138,21 +164,22 @@ export default {
         })
       }
     },
+    openAddProject() {
+      this.addProjectForm.name = ''
+      this.addProjectForm.removeColor = true
+      this.addProjectForm.model = 'css'
+      this.addProjectVisible = true
+    },
     async addProject() {
       try {
-        const res = await this.$prompt('请输入项目名称', '新建项目', {
-          cancelButtonText: '取消',
-          confirmButtonText: '确定',
-        })
         // 名称只能是英文开头
         const  reg = /^[a-zA-Z][a-zA-Z0-9_]*$/
-        if (reg.test(res.value)) {
-          await addProject({
-            name: res.value
-          })
+        if (reg.test(this.addProjectForm.name)) {
+          await addProject(this.addProjectForm)
           this.getList()
+          this.addProjectVisible = false
         } else {
-          this.$alert('名称只能包含英文和数字且必须以英文字母开头', '提示', {
+          this.$alert('名称不能为空，只能包含英文和数字且必须以英文字母开头', '提示', {
             type: 'error',
             confirmButtonText: '确定',
           })
@@ -209,7 +236,7 @@ export default {
         if (data.cssUrl) {
           item.cssUrl = data.cssUrl
           item.jsUrl = data.jsUrl
-          if (item.name.indexOf('svg') === -1) {
+          if (item.model === 'css') {
             insertCss([item])
           } else {
             insertJs([item])
@@ -238,6 +265,12 @@ export default {
         this.$router.push('/login')
       } else if (e === 'doc') {
         this.$router.push('doc')
+      }
+    },
+    removeColorChange(e) {
+      // console.log(e)
+      if (!e) {
+        this.addProjectForm.model = 'js'
       }
     }
   }

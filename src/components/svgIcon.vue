@@ -8,6 +8,10 @@ const props = defineProps({
   className: {
     type: String,
     default: ''
+  },
+  fill: {
+    type: String,
+    default: '#666'
   }
 })
 const finalIconName = computed(() => {
@@ -19,7 +23,7 @@ const finalIconName = computed(() => {
 </script>
 
 <template>
-<svg class="svg-icon" :class="className">
+<svg class="svg-icon" :class="className" :fill="fill">
   <use :xlink:href="finalIconName" width="1em" height="1em"></use>
 </svg>
 </template>
