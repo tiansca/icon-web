@@ -269,6 +269,7 @@ export default {
       margin: 16px 0;
       width: 120px;
       position: relative;
+      color: #666;
       span:first-of-type{
         font-size: 40px;
         color: #666

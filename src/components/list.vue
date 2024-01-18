@@ -338,6 +338,7 @@ export default {
         font-size: 30px;
         width: 35%;
         margin-bottom: 16px;
+        color: #666;
         //font-size: 32px;
         span{
           font-size: 30px;
