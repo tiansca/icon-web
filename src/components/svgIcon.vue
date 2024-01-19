@@ -8,6 +8,10 @@ const props = defineProps({
   className: {
     type: String,
     default: ''
+  },
+  fill: {
+    type: String,
+    default: 'transparent'
   }
 })
 const finalIconName = computed(() => {

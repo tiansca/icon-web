@@ -164,6 +164,29 @@ export default {
         console.log('文件为空')
         return
       }
+      // 验重
+      const filesArr = Array.from(files);
+      const repeatFiles = filesArr.filter(item => {
+        const nameArr = item.name.split('.')
+        nameArr.pop()
+        const itemName = `${this.name}-${nameArr.join('.')}`
+        // console.log(itemName, this.list)
+        return this.list.indexOf(itemName) !== -1
+      })
+      // console.log(repeatFiles)
+      if (repeatFiles.length) {
+        const repeatFileName = repeatFiles.map(item => {
+          const nameArr = item.name.split('.')
+          nameArr.pop()
+          return nameArr.join('.')
+        })
+        await this.$confirm(`图标${repeatFileName.join('、')}已经存在，要继续上传并替换吗？`, '提示',
+          {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning',
+          })
+      }
       for (let a = 0; a < files.length; a++) {
         formData.append('files', files[a], files[a].name);
       }
