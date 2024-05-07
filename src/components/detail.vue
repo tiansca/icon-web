@@ -25,11 +25,11 @@
     <div class="page-box">
       <div v-if="list.length > 0" class="link-info">
         <div v-if="model === 'css'" style="flex-grow: 1;overflow: hidden;white-space: nowrap;text-overflow: ellipsis">
-          css链接：<a :href="`${cssLink}${cssUrl}`" target="_block">{{ `${cssLink}${cssUrl}` }}</a>
+          css链接：<a :href="`${cssLink}${cssUrl}`" target="_block">{{ `${origin}${cssLink}${cssUrl}` }}</a>
           <span style="color: #999;margin-left: 20px;font-size: 12px">{{ removeColor ? '去除颜色' : '保留颜色' }}</span>
         </div>
         <div v-else style="width: 100%;overflow: hidden;white-space: nowrap;text-overflow: ellipsis">
-          js链接：<a :href="`${cssLink}${jsUrl}`" target="_block">{{ `${cssLink}${jsUrl}` }}</a>
+          js链接：<a :href="`${cssLink}${jsUrl}`" target="_block">{{ `${origin}${cssLink}${jsUrl}` }}</a>
           <span style="color: #999;margin-left: 20px;font-size: 12px">{{ removeColor ? '去除颜色' : '保留颜色' }}</span>
         </div>
         <div class="right-button" v-show="removeColor">
@@ -122,7 +122,8 @@ export default {
       cssUrl: '',
       jsUrl: '',
       removeColor: true,
-      model: 'css'
+      model: 'css',
+      origin: location.origin
     })
     onMounted(async () => {
       const route = useRoute()

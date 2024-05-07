@@ -4,7 +4,6 @@ import state from './state'
 import mutations from './mutations'
 import getters from './getters'
 import actions from './actions'
-window.console.log('https://tiansc.top')
 // Vue.use(Vuex)
 
 export const store = createStore({

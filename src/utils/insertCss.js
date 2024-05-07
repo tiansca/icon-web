@@ -11,7 +11,7 @@ const insertCss = (val) => {
     link.setAttribute('name', tagAttrNameValue)
     link.setAttribute('rel', 'stylesheet')
     link.setAttribute('type', 'text/css')
-    link.href = config.cssUrl + item.cssUrl + `?${Date.now()}`
+    link.href = config.baseUrl + item.cssUrl + `?${Date.now()}`
     if (header) {
       header.append(link)
     }

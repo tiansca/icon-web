@@ -6,7 +6,7 @@ import routes from './router'
 import loading from './utils/loading.js' // 引入loading
 import Bus from './utils/bus.js'/// mitt 总线程引入
 import ElementPlus from 'element-plus';
-import 'element-plus/lib/theme-chalk/index.css';
+import 'element-plus/dist/index.css';
 // import iconsVue from '@element-plus/icons-vue'
 
 
