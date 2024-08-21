@@ -20,12 +20,21 @@ const finalIconName = computed(() => {
   }
   return props.iconName
 })
+console.log(finalIconName)
 </script>
 
 <template>
-<svg class="svg-icon" :class="className" :fill="fill">
-  <use :xlink:href="finalIconName" width="1em" height="1em"></use>
-</svg>
+  <svg
+    class="svg-icon"
+    :class="className"
+    :fill="fill"
+  >
+    <use
+      :xlink:href="finalIconName"
+      width="1em"
+      height="1em"
+    />
+  </svg>
 </template>
 
 <style scoped>

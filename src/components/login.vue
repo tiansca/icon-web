@@ -1,14 +1,31 @@
 <template>
- <div style="margin: 0 auto; padding-top: 200px; width: 500px;">
-   <el-input style="margin-bottom: 16px" placeholder="请输入用户名" v-model="name" type="text"></el-input>
-   <el-input placeholder="请输入密码" v-model="password" type="password" @keydown.enter="login"></el-input>
-   <el-button :disabled="!password" style="margin-top: 16px;" type="primary" @click="login">确定</el-button>
- </div>
+  <div style="margin: 0 auto; padding-top: 200px; width: 500px;">
+    <el-input
+      v-model="name"
+      style="margin-bottom: 16px"
+      placeholder="请输入用户名"
+      type="text"
+    />
+    <el-input
+      v-model="password"
+      placeholder="请输入密码"
+      type="password"
+      @keydown.enter="login"
+    />
+    <el-button
+      :disabled="!password"
+      style="margin-top: 16px;"
+      type="primary"
+      @click="login"
+    >
+      确定
+    </el-button>
+  </div>
 </template>
 
 <script>
 export default {
-  name: "login",
+  name: "Login",
   data() {
     return {
       password: '',

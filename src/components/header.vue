@@ -1,33 +1,65 @@
 <template>
   <div class="header">
     <div class="path">
-      <span class="path-item" v-for="(item, index) in pathArr" :key="index">
+      <span
+        v-for="(item, index) in pathArr"
+        :key="index"
+        class="path-item"
+      >
         <span v-show="index !== 0">/</span>
-        <span class="path-item-text" @click="pathClick(item)">{{item.name}}</span>
+        <span
+          class="path-item-text"
+          @click="pathClick(item)"
+        >{{ item.name }}</span>
       </span>
     </div>
     <div class="menu">
       <span class="add-icon">＋</span>
       <div class="menu-box">
-        <div @click="openUpload">上传文件</div>
-        <div @click="openAdd">新建目录</div>
-        <div @click="openUploadPage">上传列表</div>
+        <div @click="openUpload">
+          上传文件
+        </div>
+        <div @click="openAdd">
+          新建目录
+        </div>
+        <div @click="openUploadPage">
+          上传列表
+        </div>
       </div>
     </div>
-    <div class="button logout" @click="logout">退出</div>
-    <input id="uploadInput" type="file" multiple style="display: none" @change="uploadFile">
+    <div
+      class="button logout"
+      @click="logout"
+    >
+      退出
+    </div>
+    <input
+      id="uploadInput"
+      type="file"
+      multiple
+      style="display: none"
+      @change="uploadFile"
+    >
     <el-dialog
-        title="新建目录"
-        v-model="dialogVisible"
-        width="300px">
+      v-model="dialogVisible"
+      title="新建目录"
+      width="300px"
+    >
       <div style="display: flex;align-items: center">
         <span style="white-space: nowrap;">名称：</span>
-        <el-input ref="myInput" size="small" v-model="folderName"></el-input>
+        <el-input
+          ref="myInput"
+          v-model="folderName"
+          size="small"
+        />
       </div>
       <template #footer>
         <span class="dialog-footer">
           <el-button @click="dialogVisible = false">取 消</el-button>
-          <el-button type="primary" @click="addFolder">确 定</el-button>
+          <el-button
+            type="primary"
+            @click="addFolder"
+          >确 定</el-button>
         </span>
       </template>
     </el-dialog>
@@ -38,7 +70,7 @@
 import {mkdir} from "../api/file";
 import { ref,onMounted } from 'vue'
 export default {
-    name: "header",
+    name: "Header",
     data() {
       return {
         dialogVisible: false,

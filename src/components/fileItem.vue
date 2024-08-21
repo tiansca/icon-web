@@ -1,11 +1,33 @@
 <template>
-  <div ref="fileItem" class="file-item" @click="clickItem">
-    <div class="file-icon" :class="{img: file.type === 'image', folder: file.type === 'folder'}" :style="backgroundStyle" @touchstart.prevent></div>
-    <div class="file-icon mask" style="position: absolute" :class="{img: file.type === 'image', folder: file.type === 'folder'}"></div>
-    <div class="file-name" :title="file.name">{{file.name}}</div>
-    <div class="file-info" v-if="file.type !== 'folder'" :title="`${file.time} ${file.sizeText}`">
-      <span>{{file.time}}</span>
-      <span style="margin-left: 4px">{{file.sizeText}}</span>
+  <div
+    ref="fileItem"
+    class="file-item"
+    @click="clickItem"
+  >
+    <div
+      class="file-icon"
+      :class="{img: file.type === 'image', folder: file.type === 'folder'}"
+      :style="backgroundStyle"
+      @touchstart.prevent
+    />
+    <div
+      class="file-icon mask"
+      style="position: absolute"
+      :class="{img: file.type === 'image', folder: file.type === 'folder'}"
+    />
+    <div
+      class="file-name"
+      :title="file.name"
+    >
+      {{ file.name }}
+    </div>
+    <div
+      v-if="file.type !== 'folder'"
+      class="file-info"
+      :title="`${file.time} ${file.sizeText}`"
+    >
+      <span>{{ file.time }}</span>
+      <span style="margin-left: 4px">{{ file.sizeText }}</span>
     </div>
   </div>
 </template>
@@ -13,7 +35,7 @@
 <script>
 import isNotInView from "../utils/isNotInView";
 export default {
-  name: "fileItem",
+  name: "FileItem",
   props: {
     file: {
       type: Object,

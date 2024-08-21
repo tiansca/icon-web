@@ -1,22 +1,44 @@
 <template>
-<div class="upload-page" v-show="show">
-  <div class="header">
-    <span class="back" @click="show=false">返回</span>
-    <span>上传文件列表</span>
-  </div>
-  <div class="file-list">
-    <div v-for="(item, index) in fileList" :key="index" class="list-item">
-      <span class="name">{{item.name}}</span>
-      <span class="size">{{item.sizeText}}</span>
-      <span class="status" v-if="!item.finished && !item.error">{{item.per}}%</span>
-      <span class="status" v-else-if="!item.error">完成</span>
-      <span class="status" v-else>失败</span>
+  <div
+    v-show="show"
+    class="upload-page"
+  >
+    <div class="header">
+      <span
+        class="back"
+        @click="show=false"
+      >返回</span>
+      <span>上传文件列表</span>
     </div>
-    <div v-if="!fileList || fileList.length === 0" style="font-size: 14px; color: #999">
-      暂无上传文件
+    <div class="file-list">
+      <div
+        v-for="(item, index) in fileList"
+        :key="index"
+        class="list-item"
+      >
+        <span class="name">{{ item.name }}</span>
+        <span class="size">{{ item.sizeText }}</span>
+        <span
+          v-if="!item.finished && !item.error"
+          class="status"
+        >{{ item.per }}%</span>
+        <span
+          v-else-if="!item.error"
+          class="status"
+        >完成</span>
+        <span
+          v-else
+          class="status"
+        >失败</span>
+      </div>
+      <div
+        v-if="!fileList || fileList.length === 0"
+        style="font-size: 14px; color: #999"
+      >
+        暂无上传文件
+      </div>
     </div>
   </div>
-</div>
 </template>
 
 <script>
@@ -24,7 +46,7 @@
 import request from '@/utils/request'
 
 export default {
-  name: "upload",
+  name: "Upload",
   data() {
     return {
       show: false,

@@ -1,9 +1,14 @@
 <template>
-  <div class="domestic-loading" v-show="isShow">
+  <div
+    v-show="isShow"
+    class="domestic-loading"
+  >
     <div class="loading-wrap">
       <div class="el-loading-spinner">
-        <svg viewBox="25 25 50 50" class="circular">
-        </svg>
+        <svg
+          viewBox="25 25 50 50"
+          class="circular"
+        />
       </div>
     </div>
   </div>
@@ -11,13 +16,13 @@
 
 <script>
 export default {
-  name: "loading",
+  name: "Loading",
+  props: {
+  },
   data() {
     return {
       isShow: false
     }
-  },
-  props: {
   },
   mounted() {
     this.$bus.$on('loadingShow', () => {

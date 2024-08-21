@@ -1,83 +1,180 @@
 <template>
   <div class="container">
     <div class="header">
-      <span class="left"></span>
+      <span class="left" />
       <span>图标库</span>
       <div class="right">
         <el-dropdown @command="menuClick">
-        <span class="el-dropdown-link">
-          {{ userName }}
-          <img src="../assets/arrow-down.png">
-        </span>
+          <span class="el-dropdown-link">
+            {{ userName }}
+            <img src="../assets/arrow-down.png">
+          </span>
           <template #dropdown>
             <el-dropdown-menu>
-              <el-dropdown-item command="doc">文档</el-dropdown-item>
-              <el-dropdown-item command="logout">退出</el-dropdown-item>
+              <el-dropdown-item command="doc">
+                文档
+              </el-dropdown-item>
+              <el-dropdown-item command="logout">
+                退出
+              </el-dropdown-item>
             </el-dropdown-menu>
           </template>
         </el-dropdown>
       </div>
     </div>
     <div class="page-box">
-      <div class="addButton" title="新建项目" @click="openAddProject">
-        <img src="../assets/add.png" alt="">
+      <div
+        class="addButton"
+        title="新建项目"
+        @click="openAddProject"
+      >
+        <img
+          src="../assets/add.png"
+          alt=""
+        >
       </div>
       <div class="project-list">
-        <div v-loading="item.loading" class="project-item" v-for="item in list" :key="item.name" @click="goDetail(item.name)">
-          <div class="project-name" :title="item.name">
-            {{item.name}}
+        <div
+          v-for="item in list"
+          :key="item.name"
+          v-loading="item.loading"
+          class="project-item"
+          @click="goDetail(item.name)"
+        >
+          <div
+            class="project-name"
+            :title="item.name"
+          >
+            {{ item.name }}
           </div>
           <div>
-            <div v-if="item.model === 'css'" class="icon-overview">
-              <div v-for="icon in item.iconList" :key="icon" class="icon-item">
-                <span :class="icon"></span>
+            <div
+              v-if="item.model === 'css'"
+              class="icon-overview"
+            >
+              <div
+                v-for="icon in item.iconList"
+                :key="icon"
+                class="icon-item"
+              >
+                <span :class="icon" />
               </div>
             </div>
-            <div v-else class="icon-overview">
-              <div v-for="icon in item.iconList" :key="icon" class="icon-item">
-                <svg-icon :icon-name="icon"></svg-icon>
+            <div
+              v-else
+              class="icon-overview"
+            >
+              <div
+                v-for="icon in item.iconList"
+                :key="icon"
+                class="icon-item"
+              >
+                <svg-icon :icon-name="icon" />
               </div>
             </div>
-            <div v-if="!item.iconList || item.iconList.length === 0" style="width: 100%">暂无图标</div>
+            <div
+              v-if="!item.iconList || item.iconList.length === 0"
+              style="width: 100%"
+            >
+              暂无图标
+            </div>
             <div class="icon-item hide">
-              <span></span>
+              <span />
             </div>
           </div>
           <div class="item-bottom">
-            <div v-if="userRole === 'admin'" class="item-button" @click.stop="deleteProject(item.name)">删除</div>
-            <div class="item-button" @click.stop="updateProject(item.name)">重命名</div>
-            <div class="item-button" @click.stop="createIcon(item)">更新</div>
+            <div
+              v-if="userRole === 'admin'"
+              class="item-button"
+              @click.stop="deleteProject(item.name)"
+            >
+              删除
+            </div>
+            <div
+              class="item-button"
+              @click.stop="updateProject(item.name)"
+            >
+              重命名
+            </div>
+            <div
+              class="item-button"
+              @click.stop="createIcon(item)"
+            >
+              更新
+            </div>
           </div>
         </div>
-        <div v-if="list.length === 0" style="margin-top: 30px; text-align: center;width: 100%">暂无数据</div>
+        <div
+          v-if="list.length === 0"
+          style="margin-top: 30px; text-align: center;width: 100%"
+        >
+          暂无数据
+        </div>
       </div>
     </div>
-    <SvgIcon icon-name="test_color-user"></SvgIcon>
-    <el-dialog v-model="addProjectVisible" title="新建项目" width="500px">
-      <el-form :model="addProjectForm" label-width="120px">
+    <SvgIcon icon-name="test_color-user" />
+    <el-dialog
+      v-model="addProjectVisible"
+      title="新建项目"
+      width="500px"
+    >
+      <el-form
+        :model="addProjectForm"
+        label-width="120px"
+      >
         <el-form-item label="项目名称">
           <el-input v-model="addProjectForm.name" />
         </el-form-item>
-        <el-form-item label="去除颜色" style="text-align: left">
-          <el-switch v-model="addProjectForm.removeColor" @change="removeColorChange" />
+        <el-form-item
+          label="去除颜色"
+          style="text-align: left"
+        >
+          <el-switch
+            v-model="addProjectForm.removeColor"
+            @change="removeColorChange"
+          />
         </el-form-item>
-        <el-form-item label="模式" style="text-align: left">
-          <el-radio-group v-model="addProjectForm.model" :disabled="!addProjectForm.removeColor" class="ml-4">
-            <el-radio label="js" size="large">js(svg symbols)</el-radio>
-            <el-radio label="css" size="large">css(font icon)</el-radio>
+        <el-form-item
+          label="模式"
+          style="text-align: left"
+        >
+          <el-radio-group
+            v-model="addProjectForm.model"
+            :disabled="!addProjectForm.removeColor"
+            class="ml-4"
+          >
+            <el-radio
+              value="js"
+              size="large"
+            >
+              js(svg symbols)
+            </el-radio>
+            <el-radio
+              value="css"
+              size="large"
+            >
+              css(font icon)
+            </el-radio>
           </el-radio-group>
         </el-form-item>
       </el-form>
       <template #footer>
-        <el-button @click="addProjectVisible = false">取消</el-button>
-        <el-button type="primary" @click="addProject">确定</el-button>
+        <el-button @click="addProjectVisible = false">
+          取消
+        </el-button>
+        <el-button
+          type="primary"
+          @click="addProject"
+        >
+          确定
+        </el-button>
       </template>
     </el-dialog>
   </div>
 </template>
 
 <script>
-import {onMounted, reactive, watch} from "vue"
+import {onMounted, reactive} from "vue"
 import {getProjects, deleteProject, addProject, updateProject} from "../api/project";
 import {createIcon} from '../api/icon'
 import Bus from '../utils/bus.js'
@@ -86,7 +183,7 @@ import SvgIcon from "@/components/svgIcon.vue";
 import insertJs from "@/utils/insertJs";
 
 export default {
-  name: 'list',
+  name: 'List',
   components: {SvgIcon},
   setup() {
     const getList = async () => {
@@ -125,13 +222,6 @@ export default {
     onMounted(() => {
       getList()
     })
-    watch(
-    //   () => state.list,
-    //   val => {
-    //     // insertCss(val)
-    //   },
-    //   { deep: true }
-    )
     return state
   },
   computed: {
@@ -332,8 +422,8 @@ export default {
     .icon-overview{
       display: flex;
       flex-wrap: wrap;
-      justify-content: space-around;
-      padding: 12px 12px 0;
+      justify-content: space-between;
+      padding: 12px 24px 0;
       .icon-item{
         font-size: 30px;
         width: 35%;

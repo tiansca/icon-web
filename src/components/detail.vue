@@ -2,82 +2,242 @@
   <div class="container">
     <div class="header">
       <div style="width: 220px">
-        <el-button size="small" @click="$router.back()">返回</el-button>
+        <el-button
+          size="small"
+          @click="$router.back()"
+        >
+          返回
+        </el-button>
       </div>
-      <span>图标预览-{{name}}</span>
+      <span>图标预览-{{ name }}</span>
       <div style="width: 220px;display: flex;align-items: center;justify-content: flex-end">
-        <input ref="input" type="file" multiple style="display:none" @change="upload" accept="image/svg+xml">
-        <el-button type="primary" size="small" @click="selectFiles" style="margin-right: 16px">上传svg</el-button>
+        <input
+          ref="input"
+          type="file"
+          multiple
+          style="display:none"
+          accept="image/svg+xml"
+          @change="upload"
+        >
+        <el-button
+          type="primary"
+          size="small"
+          style="margin-right: 16px"
+          @click="selectFiles"
+        >
+          上传svg
+        </el-button>
         <el-dropdown @command="menuClick">
-        <span class="el-dropdown-link">
-          {{ userName }}
-          <img src="../assets/arrow-down.png">
-        </span>
+          <span class="el-dropdown-link">
+            {{ userName }}
+            <img src="../assets/arrow-down.png">
+          </span>
           <template #dropdown>
             <el-dropdown-menu>
-              <el-dropdown-item command="doc">文档</el-dropdown-item>
-              <el-dropdown-item command="logout">退出</el-dropdown-item>
+              <el-dropdown-item command="doc">
+                文档
+              </el-dropdown-item>
+              <el-dropdown-item command="logout">
+                退出
+              </el-dropdown-item>
             </el-dropdown-menu>
           </template>
         </el-dropdown>
       </div>
     </div>
     <div class="page-box">
-      <div v-if="list.length > 0" class="link-info">
-        <div v-if="model === 'css'" style="flex-grow: 1;overflow: hidden;white-space: nowrap;text-overflow: ellipsis">
-          css链接：<a :href="`${cssLink}${cssUrl}`" target="_block">{{ `${origin}${cssLink}${cssUrl}` }}</a>
+      <div
+        v-if="list.length > 0"
+        class="link-info"
+      >
+        <div
+          v-if="model === 'css'"
+          style="flex-grow: 1;overflow: hidden;white-space: nowrap;text-overflow: ellipsis"
+        >
+          css链接：<a
+            :href="`${cssLink}${cssUrl}`"
+            target="_block"
+          >{{ `${origin}${cssLink}${cssUrl}` }}</a>
           <span style="color: #999;margin-left: 20px;font-size: 12px">{{ removeColor ? '去除颜色' : '保留颜色' }}</span>
         </div>
-        <div v-else style="width: 100%;overflow: hidden;white-space: nowrap;text-overflow: ellipsis">
-          js链接：<a :href="`${cssLink}${jsUrl}`" target="_block">{{ `${origin}${cssLink}${jsUrl}` }}</a>
+        <div
+          v-else
+          style="width: 100%;overflow: hidden;white-space: nowrap;text-overflow: ellipsis"
+        >
+          js链接：<a
+            :href="`${cssLink}${jsUrl}`"
+            target="_block"
+          >{{ `${origin}${cssLink}${jsUrl}` }}</a>
           <span style="color: #999;margin-left: 20px;font-size: 12px">{{ removeColor ? '去除颜色' : '保留颜色' }}</span>
         </div>
-        <div class="right-button" v-show="removeColor">
+        <div
+          v-show="removeColor"
+          class="right-button"
+        >
           <span style="margin-right: 8px">模式:</span>
-          <el-radio-group v-model="model" @change="modelChange">
-            <el-radio label="js" size="large">js(svg symbols)</el-radio>
-            <el-radio label="css" size="large">css(font icon)</el-radio>
+          <el-radio-group
+            v-model="model"
+            @change="modelChange"
+          >
+            <el-radio
+              value="js"
+              size="large"
+            >
+              js(svg symbols)
+            </el-radio>
+            <el-radio
+              value="css"
+              size="large"
+            >
+              css(font icon)
+            </el-radio>
           </el-radio-group>
         </div>
       </div>
       <div v-if="list.length > 0">
-        <div v-if="model === 'css'" class="icon-wrap">
-          <div v-for="icon in list" :key="icon" class="icon-item">
-            <span class="icon" :class="icon"></span>
-            <div class="icon-name">{{icon}}</div>
+        <div
+          v-if="model === 'css'"
+          class="icon-wrap"
+        >
+          <div
+            v-for="icon in list"
+            :key="icon"
+            class="icon-item"
+          >
+            <span
+              class="icon"
+              :class="icon"
+            />
+            <div class="icon-name">
+              {{ icon }}
+            </div>
             <div class="mask">
-              <div v-if="userRole === 'admin'" class="delete-button"  title="删除图标" @click="deleteIcon(icon)">
-                <img src="../assets/delete.png" alt="">
+              <div
+                v-if="userRole === 'admin'"
+                class="delete-button"
+                title="删除图标"
+                @click="deleteIcon(icon)"
+              >
+                <img
+                  src="../assets/delete.png"
+                  alt=""
+                >
               </div>
               <div class="mask-bottom">
-                <div @click="downloadSvg(name, icon)">下载</div>
-                <div @click="copyClass(icon)">复制</div>
+                <div @click="downloadSvg(name, icon)">
+                  下载
+                </div>
+                <div @click="copyClass(icon)">
+                  复制
+                </div>
               </div>
             </div>
           </div>
         </div>
-        <div v-else class="icon-wrap">
-          <div v-for="icon in list" :key="icon" class="icon-item">
-            <span class="icon"></span>
-            <svg-icon style="font-size: 40px" :icon-name="icon"></svg-icon>
-            <div class="icon-name">{{icon}}</div>
+        <div
+          v-else
+          class="icon-wrap"
+        >
+          <div
+            v-for="icon in list"
+            :key="icon"
+            class="icon-item"
+          >
+            <span class="icon" />
+            <svg-icon
+              style="font-size: 40px"
+              :icon-name="icon"
+            />
+            <div class="icon-name">
+              {{ icon }}
+            </div>
             <div class="mask">
-              <div v-if="userRole === 'admin'" class="delete-button"  title="删除图标" @click="deleteIcon(icon)">
-                <img src="../assets/delete.png" alt="">
+              <div
+                v-if="userRole === 'admin'"
+                class="delete-button"
+                title="删除图标"
+                @click="deleteIcon(icon)"
+              >
+                <img
+                  src="../assets/delete.png"
+                  alt=""
+                >
               </div>
               <div class="mask-bottom">
-                <div @click="downloadSvg(name, icon)">下载</div>
-                <div @click="copyClass(icon)">复制</div>
+                <div @click="downloadSvg(name, icon)">
+                  下载
+                </div>
+                <div @click="copyClass(icon)">
+                  复制
+                </div>
               </div>
             </div>
           </div>
         </div>
-
       </div>
-      <div v-if="list.length === 0" style="margin-top: 30px">
+      <div
+        v-if="list.length === 0"
+        style="margin-top: 30px"
+      >
         暂无数据
       </div>
     </div>
+    <el-dialog
+      v-model="uploadDialogVisible"
+      title="上传svg"
+      width="800px"
+    >
+      <div>
+        <div class="svg-list-box">
+          <div
+            v-for="item in uploadFiles"
+            :key="item.name"
+            class="svg-item"
+          >
+            <img
+              :src="item.url"
+              alt=""
+              class="svg-image"
+            >
+            <span class="svg-name">{{ item.name }}</span>
+          </div>
+        </div>
+        <div class="select-box">
+          <span>上传方式：</span>
+          <el-radio-group
+            v-model="edit"
+            :disabled="!removeColor"
+            class="ml-4"
+          >
+            <el-radio
+              :value="0"
+              size="large"
+            >
+              上传原图
+            </el-radio>
+            <el-radio
+              :value="1"
+              size="large"
+            >
+              自动修复
+            </el-radio>
+          </el-radio-group>
+        </div>
+      </div>
+      <template #footer>
+        <div>
+          <el-button @click="uploadCancelHandler">
+            取消
+          </el-button>
+          <el-button
+            type="primary"
+            @click="uploadConfirmHandler"
+          >
+            确认
+          </el-button>
+        </div>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
@@ -92,7 +252,7 @@ import copy from '../utils/copyText'
 import insertJs from "@/utils/insertJs";
 import SvgIcon from "@/components/svgIcon.vue";
 export default {
-  name: "detail",
+  name: "Detail",
   components: {SvgIcon},
   setup() {
     const getList = async () => {
@@ -123,7 +283,11 @@ export default {
       jsUrl: '',
       removeColor: true,
       model: 'css',
-      origin: location.origin
+      origin: location.origin,
+      uploadDialogVisible: false,
+      uploadFiles: [],
+      edit: 0,
+      formData: null
     })
     onMounted(async () => {
       const route = useRoute()
@@ -153,14 +317,20 @@ export default {
       this.$refs.input.click()
     },
     async upload() {
-      const formData = new FormData();
+      this.formData = new FormData();
       console.log(this.$refs.input)
       if (!this.$refs.input) {
         return
       }
       const files = this.$refs.input.files
-      formData.append('name', this.name);
-      console.log(files.length)
+      for (let i = 0; i < files.length; i++) {
+        this.uploadFiles.push({
+          url: URL.createObjectURL(files[i]),
+          name: files[i].name
+        })
+      }
+      this.formData.append('name', this.name);
+      console.log(files)
       if (!files || files.length === 0) {
         console.log('文件为空')
         return
@@ -189,11 +359,16 @@ export default {
           })
       }
       for (let a = 0; a < files.length; a++) {
-        formData.append('files', files[a], files[a].name);
+        this.formData.append('files', files[a], files[a].name);
       }
+      // 显示图片确认弹窗
+      this.edit = 0
+      this.uploadDialogVisible = true
+    },
+    async doUpload() {
       this.$bus.$emit('loadingShow')
       try {
-        const {data} = await upload(formData)
+        const {data} = await upload(this.formData)
         if (this.model === 'css') {
           insertCss([{name: this.name, cssUrl: this.cssUrl}])
         } else {
@@ -206,6 +381,19 @@ export default {
       }
       this.$bus.$emit('loadingHide')
       this.$refs.input.value = ''
+      this.uploadFiles = []
+      this.uploadDialogVisible = false
+    },
+    uploadCancelHandler() {
+      this.$refs.input.value = ''
+      this.uploadFiles = []
+      this.uploadDialogVisible = false
+    },
+    uploadConfirmHandler() {
+      if (this.edit) {
+        this.formData.append('edit', this.edit)
+      }
+      this.doUpload()
     },
     async deleteIcon(className) {
       try {
@@ -361,6 +549,31 @@ export default {
       }
     }
   }
+}
+
+.svg-list-box{
+  display: flex;
+  flex-wrap: wrap;
+  max-height: 60vh;
+  overflow-y: auto;
+  .svg-item{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 12px;
+    .svg-image{
+      width: 40px;
+      height: 40px;
+      margin-bottom: 8px;
+    }
+  }
+}
+.select-box{
+  display: flex;
+  justify-content: flex-start;
+  margin: 12px 0;
+  align-items: center;
 }
 
 </style>
