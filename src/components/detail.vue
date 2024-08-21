@@ -67,7 +67,7 @@
           js链接：<a
             :href="`${cssLink}${jsUrl}`"
             target="_block"
-          >{{ `${origin}${cssLink}${jsUrl}` }}</a>
+          >{{ `${cssLink}${jsUrl}` }}</a>
           <span style="color: #999;margin-left: 20px;font-size: 12px">{{ removeColor ? '去除颜色' : '保留颜色' }}</span>
         </div>
         <div
