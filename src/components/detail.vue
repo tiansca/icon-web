@@ -57,7 +57,7 @@
           css链接：<a
             :href="`${cssLink}${cssUrl}`"
             target="_block"
-          >{{ `${origin}${cssLink}${cssUrl}` }}</a>
+          >{{ cssLink.indexOf("http") !== -1 ? `${cssLink}${cssUrl}` :`${origin}${cssLink}${cssUrl}` }}</a>
           <span style="color: #999;margin-left: 20px;font-size: 12px">{{ removeColor ? '去除颜色' : '保留颜色' }}</span>
         </div>
         <div
@@ -67,7 +67,7 @@
           js链接：<a
             :href="`${cssLink}${jsUrl}`"
             target="_block"
-          >{{ `${cssLink}${jsUrl}` }}</a>
+          >{{ cssLink.indexOf("http") !== -1 ? `${cssLink}${jsUrl}` : `${origin}${cssLink}${jsUrl}` }}</a>
           <span style="color: #999;margin-left: 20px;font-size: 12px">{{ removeColor ? '去除颜色' : '保留颜色' }}</span>
         </div>
         <div
