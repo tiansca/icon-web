@@ -382,7 +382,7 @@ export default {
   position: relative;
   padding: 16px;
   .addButton{
-    position: absolute;
+    position: fixed;
     right: 30px;
     bottom: 200px;
     cursor: pointer;

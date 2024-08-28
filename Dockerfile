@@ -1,10 +1,13 @@
-FROM node:16
+FROM node:18.18.2
 
 # 将当前工作目录设置为/app
 WORKDIR /app
 
 # 将 package.json 和 package-lock.json 复制到 /app 目录下
 COPY package*.json ./
+
+#设置registry为淘宝镜像
+RUN npm set registry https://registry.npmmirror.com
 
 # 运行 npm install 安装依赖
 RUN npm install
@@ -15,11 +18,11 @@ COPY . .
 # 打包构建
 RUN npm run build
 
-# 覆盖default配置：将nginx目录下defaulut.conf文件替换为my-nginx.conf配置文件
-COPY my-nginx.conf /etc/nginx/conf.d/default.conf
-
 # 将构建后的代码复制到 nginx 镜像中
 FROM nginx:latest
+
+# 覆盖default配置：将nginx目录下defaulut.conf文件替换为my-nginx.conf配置文件
+COPY my-nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=0 /app/dist /usr/share/nginx/html
 
 # 暴露容器的 8080 端口，此处其实只是一个声明作用，不写的话也可以，后面运行容器的
