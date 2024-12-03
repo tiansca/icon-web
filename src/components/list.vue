@@ -11,6 +11,12 @@
           </span>
           <template #dropdown>
             <el-dropdown-menu>
+              <el-dropdown-item
+                v-if="userRole === 'admin'"
+                command="user"
+              >
+                用户管理
+              </el-dropdown-item>
               <el-dropdown-item command="doc">
                 文档
               </el-dropdown-item>
@@ -117,10 +123,12 @@
       v-model="addProjectVisible"
       title="新建项目"
       width="500px"
+      :close-on-click-modal="false"
     >
       <el-form
         :model="addProjectForm"
         label-width="120px"
+        style="padding-right: 50px"
       >
         <el-form-item label="项目名称">
           <el-input v-model="addProjectForm.name" />
@@ -355,6 +363,8 @@ export default {
         this.$router.push('/login')
       } else if (e === 'doc') {
         this.$router.push('doc')
+      } else if (e === 'user') {
+        this.$router.push('user')
       }
     },
     removeColorChange(e) {
@@ -380,7 +390,7 @@ export default {
 }
 .page-box{
   position: relative;
-  padding: 16px;
+  padding: 8px;
   .addButton{
     position: fixed;
     right: 30px;
@@ -397,7 +407,7 @@ export default {
   }
   .project-item{
     width: 150px;
-    margin: 30px;
+    margin: 16px;
     height: 150px;
     border: 1px solid #ccc;
     cursor: pointer;
@@ -418,6 +428,7 @@ export default {
       font-weight: 600;
       overflow: hidden;
       text-overflow: ellipsis;
+      padding: 0 8px;
     }
     .icon-overview{
       display: flex;
@@ -457,6 +468,15 @@ export default {
         border-left: 1px solid #999;
       }
     }
+  }
+}
+@media screen and (max-width: 800px) {
+  .page-box{
+    padding: 8px;
+  }
+  .page-box .project-item {
+    margin: 12px;
+    width: calc(50% - 26px);
   }
 }
 </style>

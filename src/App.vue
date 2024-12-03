@@ -94,6 +94,7 @@ html, body{
   justify-content: space-between;
   background-color: #fff;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+  flex-shrink: 0;
 }
 .header .el-dropdown{
   max-width: 120px;
@@ -111,6 +112,9 @@ html, body{
 .header .left{
   width: 150px;
   display: inline-block;
+  flex-grow: 0;
+  padding-left: 16px;
+  text-align: left;
 }
 .page-box{
   flex-grow: 1;

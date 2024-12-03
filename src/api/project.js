@@ -41,3 +41,36 @@ export function login(data) {
     data
   })
 }
+// 获取用户列表
+export function getUserList(params) {
+  return request({
+    url: '/getUserList',
+    method: 'get',
+    params
+  })
+}
+// 删除用户
+export function deleteUser(data) {
+  return request({
+    url: '/deleteUser',
+    method: 'post',
+    data
+  })
+}
+export function addUser(data) {
+  return request({
+    url: '/addUser',
+    method: 'post',
+    data
+  })
+}
+
+// 修改用户信息
+export function updateUser(data) {
+  return request({
+    url: '/updateUser',
+    method: 'post',
+    data
+  })
+}
+

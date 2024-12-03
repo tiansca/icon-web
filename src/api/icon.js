@@ -1,5 +1,6 @@
 import request from '@/utils/request'
 import config from '@/config.js'
+import {ElMessageBox } from 'element-plus'
 
 export function createIcon(params) {
   return request({
@@ -38,8 +39,25 @@ export function deleteIcon(params) {
 }
 
 // 下载图标
-export function download(name, className) {
-  window.open(`${config.baseUrl}icon/download?name=${name}&className=${className}`)
+export async function download(name, className) {
+  // 提示下载
+  const fileName = className.replace(`${name}-`, '')
+  let url = `${config.baseUrl}icons/${name}/${fileName}.svg`
+  if (url.indexOf('http') === -1) {
+    url = `${location.origin}${location.pathname}${url}`
+    url = url.replace(/([^:]\/)\/+/g, '$1')
+  }
+  try {
+    await ElMessageBox.confirm(`下载链接：${url}`, 'svg链接', {
+      confirmButtonText: '打开链接',
+      cancelButtonText: '复制链接',
+      type: 'success'
+    })
+    window.open(url)
+  } catch (e) {
+    // 复制链接到剪贴板
+    navigator.clipboard.writeText(url)
+  }
 }
 
 // 更新图标模式

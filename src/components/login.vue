@@ -42,8 +42,10 @@ export default {
         })
         console.log(1)
       } catch (e) {
-        console.log(2)
-        this.$alert('登录失败')
+        console.log(e, 2)
+        this.$alert(e.message || e.error || '登录失败', '提示', {
+          type: 'error',
+        })
       }
 
     }

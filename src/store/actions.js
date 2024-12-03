@@ -28,10 +28,10 @@ const actions = {
           content.commit('setLogin', false)
           content.commit('setUserSession', {})
           localStorage.setItem('user', JSON.stringify({}))
-          reject('请登录')
+          reject(info || '登录失败')
         }
       } catch (e) {
-        reject('请登录')
+        reject(e || '请登录')
       }
     })
   },

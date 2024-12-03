@@ -4,6 +4,15 @@
 
 <template>
   <div class="content">
+    <el-button
+      type="primary"
+      size="small"
+      style="position: absolute;left: 16px;top: 24px"
+      plain
+      @click="$router.push('/')"
+    >
+      首页
+    </el-button>
     <h2>使用指南</h2>
     <p>
       本项目是一个图标库的管理工具，上传svg图标，生成前端可用的font-icon图标和SVG symbols图标，具体来说，如果新建项目时选择保留颜色，则只能使用svg symbols的方式来展现图标，因为font icon不支持多色图标；相反，若新建项目时选择去除颜色，则可以自由切换使用js（svg symbols）或者css(font icon)。
@@ -30,14 +39,17 @@
         </li>
       </ul>
     </p>
-    <p>
-      生成图标时，有时会出现显示异常的现象，常见的原因是svg中有使用stroke描边的形状，可以尝试把描边转换为填充再重新上传。
+    <p style="color: var(--el-color-danger)">
+      生成图标时，有时会出现显示异常的现象（显示空白、图标部分缺失、显示为方块等），常见的原因有两个：
     </p>
-    <p>
-      <a
-        href="/svgFix.zip"
-        target="_blank"
-      >svg描边转填充工具下载</a>
+    <p style="color: var(--el-color-danger)">
+      1、svg中有使用stroke描边的形状。
+    </p>
+    <p style="color: var(--el-color-danger)">
+      2、svg中有path以外的其他形状。
+    </p>
+    <p style="color: var(--el-color-danger)">
+      如果图标显示异常可以重新上传有问题的图标，并勾选自动修复选项(保留颜色的项目不支持自动修复)，这时系统会尝试自动修复不符合svg规范的图标。若还是无法解决，请自行修改svg文件。
     </p>
   </div>
 </template>

@@ -34,6 +34,12 @@
           </span>
           <template #dropdown>
             <el-dropdown-menu>
+              <el-dropdown-item
+                v-if="userRole === 'admin'"
+                command="user"
+              >
+                用户管理
+              </el-dropdown-item>
               <el-dropdown-item command="doc">
                 文档
               </el-dropdown-item>
@@ -429,6 +435,8 @@ export default {
         this.$router.push('/login')
       } else if (e === 'doc') {
         this.$router.push('doc')
+      } else if (e === 'user') {
+        this.$router.push('/user')
       }
     },
     async modelChange(e) {
@@ -576,4 +584,12 @@ export default {
   align-items: center;
 }
 
+@media screen and (max-width: 600px) {
+  .page-box .icon-wrap .icon-item{
+    width: calc(33% - 5px)
+  }
+  .page-box .link-info{
+    display: block;
+  }
+}
 </style>

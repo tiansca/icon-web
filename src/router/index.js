@@ -19,6 +19,14 @@ const routes = [
     }
   },
   {
+    path: '/user',
+    name: '用户管理',
+    component: () => import('../components/user'),
+    meta: {
+      title: 'user'
+    }
+  },
+  {
     path: '/login',
     name: '登录',
     component: () => import('../components/login'),
@@ -58,6 +66,8 @@ router.beforeEach((to, from, next) => {
       next('/login');
     } else if (to.path === '/login') {
       next('/');
+    } else if (to.path === '/user' && store.state.user.role !== 'admin') {
+      next('/')
     } else {
       next()
     }
