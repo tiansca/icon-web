@@ -396,6 +396,11 @@ export default {
     right: 30px;
     bottom: 200px;
     cursor: pointer;
+    z-index: 2;
+    background: #fff;
+    border-radius: 50%;
+    display: flex;
+    box-shadow: 0 0 8px 1px rgba(0, 0, 0, 0.2);
     img{
       width: 40px;
     }
