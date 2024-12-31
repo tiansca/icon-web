@@ -120,4 +120,7 @@ html, body{
   flex-grow: 1;
   overflow: auto;
 }
+.el-message-box__message{
+  word-break: break-all;
+}
 </style>
