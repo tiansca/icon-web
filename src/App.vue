@@ -1,5 +1,7 @@
 <template>
-  <router-view />
+  <ElConfigProvider :locale="zhCn">
+    <router-view />
+  </ElConfigProvider>
 </template>
 
 <script>
@@ -7,13 +9,20 @@
 // import myHeader from './components/header'
 // import upload from './components/upload'
 // import {login} from "./api/user";
-
+import { ElConfigProvider } from 'element-plus'
+import zhCn from 'element-plus/es/locale/lang/zh-cn'
 export default {
   name: 'App',
   components: {
+    ElConfigProvider
     // list,
     // myHeader,
     // upload
+  },
+  data() {
+    return {
+      zhCn
+    }
   },
   computed: {
     isLogin() {
