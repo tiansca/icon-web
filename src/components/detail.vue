@@ -133,7 +133,7 @@
               <div
                 title="下载"
                 class="download-button button"
-                @click="downloadSvg(name, icon)"
+                @click="openDownload(name, icon)"
               >
                 <img
                   src="../assets/download.png"
