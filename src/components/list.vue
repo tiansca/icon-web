@@ -110,12 +110,12 @@
             </div>
           </div>
         </div>
-        <div
-          v-if="list.length === 0"
-          style="margin-top: 30px; text-align: center;width: 100%"
-        >
-          暂无数据
-        </div>
+      </div>
+      <div
+        v-if="list.length === 0"
+        style="margin-top: 30px; text-align: center;width: 100%"
+      >
+        暂无数据
       </div>
     </div>
     <SvgIcon icon-name="test_color-user" />
@@ -406,15 +406,17 @@ export default {
     }
   }
   .project-list{
-    display: flex;
-    justify-content: flex-start;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    grid-gap: 18px 16px;
+    justify-items: center;
+    padding: 8px;
   }
   .project-item{
     width: 150px;
-    margin: 16px;
+    //margin: 16px;
     height: 150px;
-    border: 1px solid #ccc;
+    //border: 1px solid #ccc;
     cursor: pointer;
     position: relative;
     background-color: #fff;

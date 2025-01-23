@@ -697,13 +697,16 @@ export default {
     }
   }
   .icon-wrap{
-    display: flex;
     margin-top: 30px;
-    justify-content: flex-start;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    grid-gap: 18px 16px;
+    justify-items: center;
+    color: #666;
+    padding: 8px;
     .icon-item{
       padding: 20px 3px;
-      margin: 16px 4px;
+      //margin: 16px 4px;
       width: 120px;
       position: relative;
       color: #666;
