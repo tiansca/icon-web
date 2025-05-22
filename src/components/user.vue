@@ -108,7 +108,7 @@
         >
           <el-input
             v-model="addUserForm.name"
-            :disabled="addUserForm.name === 'admin'"
+            :disabled="dialogTitle === '修改用户'"
             placeholder="请输入用户名"
           />
         </el-form-item>
