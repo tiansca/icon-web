@@ -4,7 +4,9 @@
 const state = {
   user: {
     name: '',
-    role: ''
+    role: '',
+    permissions: [],
+    id: ''
   },
   path: '',
   isLogin: false

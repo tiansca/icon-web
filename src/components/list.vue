@@ -12,7 +12,6 @@
           <template #dropdown>
             <el-dropdown-menu>
               <el-dropdown-item
-                v-if="userRole === 'admin'"
                 command="user"
               >
                 用户管理
@@ -90,7 +89,7 @@
           </div>
           <div class="item-bottom">
             <div
-              v-if="userRole === 'admin'"
+              v-if="hasPermission('icon-project_delete', 3)"
               class="item-button"
               @click.stop="deleteProject(item.name)"
             >
@@ -189,6 +188,8 @@ import Bus from '../utils/bus.js'
 import insertCss from "../utils/insertCss";
 import SvgIcon from "@/components/svgIcon.vue";
 import insertJs from "@/utils/insertJs";
+import config from "@/config";
+import {hasPermission} from "@/utils";
 
 export default {
   name: 'List',
@@ -241,6 +242,7 @@ export default {
     }
   },
   methods: {
+    hasPermission,
     async deleteProject(name) {
       try {
         await this.$confirm(`确定删除项目“${name}”吗？`, '提示', {
@@ -257,9 +259,9 @@ export default {
         })
         this.getList()
       } catch (e) {
-        this.$alert(e && e.code === -1 ? e.data : '删除失败', {
-          confirmButtonText: '确定',
-        })
+        // this.$alert(e && e.code === -1 ? e.data : '删除失败', {
+        //   confirmButtonText: '确定',
+        // })
       }
     },
     openAddProject() {
@@ -364,7 +366,7 @@ export default {
       } else if (e === 'doc') {
         this.$router.push('doc')
       } else if (e === 'user') {
-        this.$router.push('user')
+        window.open(config.authUrl)
       }
     },
     removeColorChange(e) {

@@ -11,6 +11,7 @@
 // import {login} from "./api/user";
 import { ElConfigProvider } from 'element-plus'
 import zhCn from 'element-plus/es/locale/lang/zh-cn'
+import config from "@/config";
 export default {
   name: 'App',
   components: {
@@ -32,7 +33,9 @@ export default {
   watch: {
     isLogin(n) {
       if (!n) {
-        this.$router.push('/login')
+        // this.$router.push('/login')
+        console.log(config)
+        window.location.replace(config.authUrl + "#/login" + '?redirect=' + encodeURIComponent(window.location.href))
       }
     }
   },

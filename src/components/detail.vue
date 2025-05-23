@@ -35,7 +35,6 @@
           <template #dropdown>
             <el-dropdown-menu>
               <el-dropdown-item
-                v-if="userRole === 'admin'"
                 command="user"
               >
                 用户管理
@@ -119,7 +118,7 @@
             </div>
             <div class="mask">
               <div
-                v-if="userRole === 'admin'"
+                v-if="hasPermission('icon-delete', 3)"
                 class="delete-button button"
                 title="删除图标"
                 @click="deleteIcon(icon)"
@@ -174,7 +173,7 @@
             </div>
             <div class="mask">
               <div
-                v-if="userRole === 'admin'"
+                v-if="hasPermission('icon-delete', 3)"
                 class="delete-button button"
                 title="删除图标"
                 @click="deleteIcon(icon)"
@@ -369,6 +368,7 @@ import insertCss from "../utils/insertCss";
 import copy from '../utils/copyText'
 import insertJs from "@/utils/insertJs";
 import SvgIcon from "@/components/svgIcon.vue";
+import {hasPermission} from "@/utils";
 export default {
   name: "Detail",
   components: {SvgIcon},
@@ -458,6 +458,7 @@ export default {
     }
   },
   methods: {
+    hasPermission,
     selectFiles() {
       this.$refs.input.click()
     },
@@ -557,9 +558,9 @@ export default {
         })
         this.getList()
       } catch (e) {
-        this.$alert(e && e.code === -1 ? e.data : '删除失败', {
-          confirmButtonText: '确定',
-        })
+        // this.$alert(e && e.code === -1 ? e.data : '删除失败', {
+        //   confirmButtonText: '确定',
+        // })
       }
     },
     openDownload(name, className) {
@@ -567,7 +568,7 @@ export default {
       this.downloadFileName = className
       // 提示下载
       const fileName = className.replace(`${name}-`, '')
-      let url = `${config.baseUrl}icons/${name}/${fileName}.svg`
+      let url = `${config.cssUrl}icons/${name}/${fileName}.svg`
       if (url.indexOf('http') === -1) {
         url = `${location.origin}${location.pathname}${url}`
         url = url.replace(/([^:]\/)\/+/g, '$1')
@@ -653,7 +654,7 @@ export default {
       } else if (e === 'doc') {
         this.$router.push('doc')
       } else if (e === 'user') {
-        this.$router.push('/user')
+        window.open(config.authUrl)
       }
     },
     async modelChange(e) {
@@ -665,10 +666,10 @@ export default {
         })
         location.reload()
       } catch (e) {
-        this.$alert('切换失败', '提示', {
-          type: 'error',
-          confirmButtonText: '确定',
-        })
+        // this.$alert('切换失败', '提示', {
+        //   type: 'error',
+        //   confirmButtonText: '确定',
+        // })
       }
     }
   }

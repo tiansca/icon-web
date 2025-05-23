@@ -1,4 +1,4 @@
-import {login} from "@/api/project";
+import {login, logout} from "@/api/project";
 
 /**
  * Created by administrator on 2019/4/23.
@@ -40,15 +40,12 @@ const actions = {
     return new Promise(async function(resolve, reject) {
       // const info = await logout()
       try {
-      //   if (info.code === 0) {
+        await logout()
         store.commit('setLogin', false)
         store.commit('setUserSession', {})
         localStorage.setItem('user', JSON.stringify({}))
         localStorage.removeItem('token')
         resolve()
-      //   } else {
-      //     reject('退出失败！')
-      //   }
       } catch (e) {
         reject('退出失败！')
       }

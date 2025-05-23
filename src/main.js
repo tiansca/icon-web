@@ -7,6 +7,8 @@ import loading from './utils/loading.js' // 引入loading
 import Bus from './utils/bus.js'/// mitt 总线程引入
 import ElementPlus from 'element-plus';
 import 'element-plus/dist/index.css';
+import {getUserInfo} from "@/api/project";
+import config from "@/config";
 // import iconsVue from '@element-plus/icons-vue'
 
 
@@ -20,21 +22,54 @@ import 'element-plus/dist/index.css';
 //     location.replace(`//user.tiansc.top/#/login?from=${location.href}`)
 //   }
 // }
+// 解析url hash中的参数
+const getHash = () => {
+  let hash = location.hash.slice(1)
+  // 删除url中的token参数
+  if (hash.indexOf('?') && hash.split('?')[1]) {
+    const paramsArray = hash.split('?')[1].split('&')
+    return paramsArray.reduce((acc, cur) => {
+      const [key, value] = cur.split('=')
+      acc[key] = value
+      if (key === 'token') {
+        hash = hash.replace(cur, '')
+        location.hash = hash
+      }
+      return acc
+    }, {})
+  }
+  return {}
+}
 
 const init = async () => {
   console.log(localStorage.getItem('token'))
+  // 读取url hash中的token参数
+  const hashParams = getHash()
+  if (hashParams.token) {
+    localStorage.setItem('token', hashParams.token)
+  }
   if (localStorage.getItem('token')) {
     store.commit('setLogin', true)
   }
+  // if (document.cookie.indexOf("token") !== -1) {
+  //   store.commit('setLogin', true)
+  // }
   // 用户信息
-  if (localStorage.getItem('user')) {
-    try {
-      const user = JSON.parse(localStorage.getItem('user'))
-      store.commit('setUserSession', user)
-    } catch(e) {console.log(e)}
-
+  try {
+    const {data} = await getUserInfo()
+    console.log(data.username)
+    store.commit("setUserSession", {
+      name: data.username,
+      role: data.roleList,
+      permissions: data.permissionList,
+      id: data.userid
+    })
+  } catch{
+    console.log(config)
+    window.location.replace(config.authUrl + "#/login" + '?redirect=' + encodeURIComponent(window.location.href))
+    return
   }
-  // await getUser()
+
   const app = createApp(App)
   app.use(store)
   app.use(routes)

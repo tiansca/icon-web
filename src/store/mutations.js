@@ -5,6 +5,8 @@ const mutations = {
   setUserSession(state, value) {
     state.user.name = value.name || ''
     state.user.role = value.role || ''
+    state.user.permissions = value.permissions || []
+    state.user.id = value.id
   },
   setPath(state, value) {
     state.path = value

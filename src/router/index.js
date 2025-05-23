@@ -1,5 +1,6 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import { store } from '@/store'
+import config from "@/config";
 
 const routes = [
   {
@@ -26,20 +27,28 @@ const routes = [
       title: 'user'
     }
   },
-  {
-    path: '/login',
-    name: '登录',
-    component: () => import('../components/login'),
-    meta: {
-      title: 'login'
-    }
-  },
+  // {
+  //   path: '/login',
+  //   name: '登录',
+  //   component: () => import('../components/login'),
+  //   meta: {
+  //     title: 'login'
+  //   }
+  // },
   {
     path: '/doc',
     name: '指南',
     component: () => import('../components/doc'),
     meta: {
       title: '指南'
+    }
+  },
+  {
+    path: '/403',
+    name: '403',
+    component: () => import('../components/403'),
+    meta: {
+      title: '403'
     }
   },
   {
@@ -56,6 +65,7 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const isLogin = store.state.isLogin
+  const permissions = store.state.user.permissions
   if (to.path == '/login' && !isLogin) {
     // 登录或者注册才可以往下进行
     next();
@@ -63,12 +73,20 @@ router.beforeEach((to, from, next) => {
     // 获取 登录状态
     // token 不存在
     if (!isLogin) {
-      next('/login');
+      // 未登录
+      console.log(config)
+      window.location.replace(config.authUrl + "#/login" + '?redirect=' + encodeURIComponent(window.location.href))
+      next()
     } else if (to.path === '/login') {
+      // 已登录，跳转到主页
       next('/');
-    } else if (to.path === '/user' && store.state.user.role !== 'admin') {
-      next('/')
     } else {
+      // 有无权限
+      if (permissions.find && !permissions.find(item => item.type === 1 && item.key === 'icon') &&  to.path !== '/403') {
+        // 有权限
+        next("/403")
+        return
+      }
       next()
     }
   }

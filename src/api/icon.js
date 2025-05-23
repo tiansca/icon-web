@@ -4,7 +4,7 @@ import {ElMessageBox } from 'element-plus'
 
 export function createIcon(params) {
   return request({
-    url: 'icon/create_icon',
+    url: '/proxy/icon/icon/create_icon',
     method: 'get',
     params
   })
@@ -13,7 +13,7 @@ export function createIcon(params) {
 // 获取项目的图标列表 get_icon_list
 export function getIconlist(params) {
   return request({
-    url: 'icon/get_icon_list',
+    url: '/proxy/icon/icon/get_icon_list',
     method: 'get',
     params
   })
@@ -22,7 +22,7 @@ export function getIconlist(params) {
 // 上传svg
 export function upload(data) {
   return request({
-    url: 'icon/upload_svg',
+    url: '/proxy/icon/icon/upload_svg',
     method: 'post',
     headers: { 'Content-Type': 'multipart/form-data' },
     data: data
@@ -32,7 +32,7 @@ export function upload(data) {
 // 删除图标
 export function deleteIcon(params) {
   return request({
-    url: 'icon/delete_icon',
+    url: '/proxy/icon/icon/delete_icon',
     method: 'get',
     params
   })
@@ -42,7 +42,7 @@ export function deleteIcon(params) {
 export async function download(name, className) {
   // 提示下载
   const fileName = className.replace(`${name}-`, '')
-  let url = `${config.baseUrl}icons/${name}/${fileName}.svg`
+  let url = `${config.cssUrl}icons/${name}/${fileName}.svg`
   if (url.indexOf('http') === -1) {
     url = `${location.origin}${location.pathname}${url}`
     url = url.replace(/([^:]\/)\/+/g, '$1')
@@ -63,7 +63,7 @@ export async function download(name, className) {
 // 更新图标模式
 export function updateModel(params) {
   return request({
-    url: 'icon/update_project_model',
+    url: '/proxy/icon/icon/update_project_model',
     method: 'get',
     params
   })

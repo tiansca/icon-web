@@ -4,6 +4,7 @@
 import axios from 'axios'
 import config from '@/config.js'
 import { store } from '@/store'
+import {ElMessage} from "element-plus";
 
 const service = axios.create({
   baseURL: config.baseUrl, // url = base url + request url
@@ -31,12 +32,19 @@ service.interceptors.response.use(
       if (res.data === '请登录' || res.message === '请登录') {
         store.commit('setLogin', false)
       }
+      ElMessage.error(res.error || res.message || res.data || '服务器错误')
       return Promise.reject(res)
     } else {
       return res
     }
   },
   error => {
+    console.log('err' + error)
+    console.log('err' + error.message)
+    // http状态码
+    if (error.response.status === 401) {
+      store.commit('setLogin', false)
+    }
     return Promise.reject(error)
   }
 )

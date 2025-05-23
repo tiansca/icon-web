@@ -3,7 +3,7 @@ import request from '@/utils/request'
 
 export function getProjects(params) {
   return request({
-    url: 'icon/get_projects',
+    url: '/proxy/icon/icon/get_projects',
     method: 'get',
     params
   })
@@ -11,7 +11,7 @@ export function getProjects(params) {
 
 export function deleteProject(params) {
   return request({
-    url: 'icon/delete_project',
+    url: '/proxy/icon/icon/delete_project',
     method: 'get',
     params
   })
@@ -19,7 +19,7 @@ export function deleteProject(params) {
 
 export function addProject(params) {
   return request({
-    url: 'icon/add_project',
+    url: '/proxy/icon/icon/add_project',
     method: 'get',
     params
   })
@@ -28,7 +28,7 @@ export function addProject(params) {
 // 修改项目名称 update_project
 export function updateProject(params) {
   return request({
-    url: 'icon/update_project',
+    url: '/proxy/icon/icon/update_project',
     method: 'get',
     params
   })
@@ -39,6 +39,12 @@ export function login(data) {
     url: `/login/`,
     method: 'post',
     data
+  })
+}
+export function logout() {
+  return request({
+    url: `/user/logout/`,
+    method: 'get'
   })
 }
 // 获取用户列表
@@ -71,6 +77,15 @@ export function updateUser(data) {
     url: '/updateUser',
     method: 'post',
     data
+  })
+}
+
+// 获取用户信息
+export function getUserInfo(params) {
+  return request({
+    url: '/user/checkToken',
+    method: 'get',
+    params
   })
 }
 

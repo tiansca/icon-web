@@ -11,7 +11,7 @@ const insertJs = (val) => {
     link.setAttribute('name', tagAttrNameValue)
     // link.setAttribute('rel', 'stylesheet')
     link.setAttribute('type', 'text/javascript')
-    link.src = config.baseUrl + item.jsUrl + `?${Date.now()}`
+    link.src = config.cssUrl + item.jsUrl + `?${Date.now()}`
     if (header) {
       header.append(link)
     }
