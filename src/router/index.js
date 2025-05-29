@@ -1,6 +1,7 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import { store } from '@/store'
 import config from "@/config";
+import {getCookie} from "@/utils";
 
 const routes = [
   {
@@ -64,7 +65,7 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  const isLogin = store.state.isLogin
+  const isLogin = getCookie('islogin')
   const permissions = store.state.user.permissions
   if (to.path == '/login' && !isLogin) {
     // 登录或者注册才可以往下进行

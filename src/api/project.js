@@ -88,4 +88,12 @@ export function getUserInfo(params) {
     params
   })
 }
+// 刷新token
+export function refreshTokenApi(params) {
+  return request({
+    url: '/user/refreshToken',
+    method: 'get',
+    params
+  })
+}
 

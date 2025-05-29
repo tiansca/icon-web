@@ -7,8 +7,9 @@ import loading from './utils/loading.js' // 引入loading
 import Bus from './utils/bus.js'/// mitt 总线程引入
 import ElementPlus from 'element-plus';
 import 'element-plus/dist/index.css';
-import {getUserInfo} from "@/api/project";
+import {getUserInfo, refreshTokenApi} from "@/api/project";
 import config from "@/config";
+import {setCookie} from "@/utils";
 // import iconsVue from '@element-plus/icons-vue'
 
 
@@ -57,6 +58,8 @@ const init = async () => {
   // 用户信息
   try {
     const {data} = await getUserInfo()
+    // 设置coockie islogin 为true
+    setCookie("islogin", true, data.exp)
     console.log(data.username)
     store.commit("setUserSession", {
       name: data.username,
@@ -64,6 +67,9 @@ const init = async () => {
       permissions: data.permissionList,
       id: data.userid
     })
+    if (data.exp - Date.now() < 1000 * 60 * 60 * 24 * 2.8) {
+      refreshToken()
+    }
   } catch{
     console.log(config)
     window.location.replace(config.authUrl + "#/login" + '?redirect=' + encodeURIComponent(window.location.href))
@@ -80,4 +86,13 @@ const init = async () => {
   // app.component('iconsVue', iconsVue)
 }
 init()
+
+
+// 刷新token
+async function refreshToken() {
+  const res = await refreshTokenApi()
+  console.log(res)
+  // 缓存token
+  localStorage.setItem('token', res.token)
+}
 

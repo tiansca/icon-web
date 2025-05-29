@@ -1,4 +1,5 @@
 import {login, logout} from "@/api/project";
+import {setCookie} from "@/utils";
 
 /**
  * Created by administrator on 2019/4/23.
@@ -45,6 +46,7 @@ const actions = {
         store.commit('setUserSession', {})
         localStorage.setItem('user', JSON.stringify({}))
         localStorage.removeItem('token')
+        setCookie('islogin', '')
         resolve()
       } catch (e) {
         reject('退出失败！')
